@@ -1,0 +1,7 @@
+official_python_sdk/
+test/output/
+
+test/mario_disas.txt
+
+test/example_mario.lua
+test/scratch.lua
