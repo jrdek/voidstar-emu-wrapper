@@ -9,7 +9,8 @@ require "src.libsnouty";
 Snouty.assert.reachable(
     "RESET vector addr is reachable",
     0x8000,  -- address
-    0        -- ROM bank
+    0,       -- ROM bank
+    function() return {example = "this is an example"} end
 )
 
 -- now let's pretend we trip the watchpoint that ^ sets:

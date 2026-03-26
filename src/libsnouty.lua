@@ -4,6 +4,9 @@
 This file defines and instantiates `Snouty`, which is basically the entire "SDK wrapper".
 --]]
 
+require "src.util.debug_print";
+debug_print.enable();
+
 require "src.util.array";
 require "src.anti_assert_manager";
 
@@ -44,8 +47,24 @@ end
 
 Snouty.assert = {};
 
-function Snouty.assert.reachable(description, address, bank, details)
-    return Snouty._assertion_manager:assert_reachable(description, address, bank, details);
+function Snouty.assert.reachable(description, address, bank, get_details)
+    return Snouty._assertion_manager:assert_reachable(description, address, bank, get_details);
+end
+
+function Snouty.assert.unreachable(description, address, bank, get_details)
+    return Snouty._assertion_manager:assert_unreachable(description, address, bank, get_details);
+end
+
+function Snouty.assert.always(description, check_func, address, bank, get_details)
+    return Snouty._assertion_manager:assert_always(description, check_func, address, bank, get_details)
+end
+
+function Snouty.assert.always_or_unreachable(description, check_func, address, bank, get_details)
+    return Snouty._assertion_manager:assert_always_or_unreachable(description, check_func, address, bank, get_details)
+end
+
+function Snouty.assert.sometimes(description, check_func, address, bank, get_details)
+    return Snouty._assertion_manager:assert_sometimes(description, check_func, address, bank, get_details)
 end
 
 -- (TODO: more of these!)

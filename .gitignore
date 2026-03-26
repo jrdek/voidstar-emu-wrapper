@@ -1,4 +1,6 @@
 official_python_sdk/
+fceux/
+
 test/output/
 
 test/mario_disas.txt

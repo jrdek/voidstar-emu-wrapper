@@ -21,7 +21,7 @@ The Antithesis SDK's assertion JSONs have this structure:
         assert_type,    (const string)
         display_type,   (const string)
         message,        (const string)
-        condition,      (boolean)
+        condition,      (boolean)*
         id,             (const string)
         location: {
             class,      (const string)
@@ -64,10 +64,12 @@ local function _typed_index_or_err(_table, key, typing)
     -- NOTE: this will straight up break if _table is not a table
     return assert(
         _typed_index_or_nil(_table, key, typing),
-        "Value for key `%s` is `%s` (doesn't match `%s`)",
-        key,
-        _table[key],
-        typing
+        string.format(
+            "Value for key `%s` is `%s` (doesn't match `%s`)",
+            key,
+            _table[key],
+            typing
+        )
     )
 end
 
@@ -77,7 +79,7 @@ local ASSERTION_FIELDS_TYPING <const> = {
     assert_type = {"always", "sometimes", "reachability"},
     display_type = "string",
     message = "string",
-    condition = "boolean",
+    --condition = "boolean",
     id = "string",
     -- `location` is a table (with specific structure to check elsewhere)
     -- `details` is basically anything, so we'll ignore it here
@@ -104,8 +106,9 @@ local function _validate_assertion_fields(fields)
         filled.location[k] = _typed_index_or_err(fields.location, k, t);
     end
 
-    -- `details` can be anything jsonifiable
-    filled.details = fields.details;
+    -- CHECKME: everything below this, especially for catalogging
+    filled.condition = false;
+    filled.details = fields.details;  -- `details` can be anything jsonifiable
 
     return filled;
 end
@@ -129,7 +132,7 @@ function SdkAssertion:to_jsonl()
 end
 
 
-function SdkAssertion:new(check_func, fields)
+function SdkAssertion:new(check_func, fields, get_details)
     local new_a = {};
     setmetatable(new_a, self);
     self.__index = self;
@@ -140,6 +143,7 @@ function SdkAssertion:new(check_func, fields)
     }
 
     new_a.check_func = check_func;
+    new_a.get_details = get_details;
 
     new_a.body = _validate_assertion_fields(fields);
     new_a.body.hit = false;
