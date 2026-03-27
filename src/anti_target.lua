@@ -90,7 +90,7 @@ function module.FCEUX._build_location(address, bank)
     local nes_location = {
         class = "",         -- no obvious analog, so leave it blank
         ["function"] = "",  -- TODO: maybe we could track jumps in a ROM...
-        file = "ROM Bank " .. tostring(bank),
+        file = string.format("ROM Bank %d", bank),
         begin_line = address,
         begin_column = 0    -- no obvious analog, so leave it blank
     };

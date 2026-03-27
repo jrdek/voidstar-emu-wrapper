@@ -67,8 +67,8 @@ local function _typed_index_or_err(_table, key, typing)
         string.format(
             "Value for key `%s` is `%s` (doesn't match `%s`)",
             key,
-            _table[key],
-            typing
+            tostring(_table[key]),
+            tostring(typing)
         )
     )
 end

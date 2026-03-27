@@ -47,6 +47,11 @@ function AssertionManager:_catalog(assert_obj)
             self._inventory[assertion_id].body.location.begin_line
         ));
     end
+    debug_print(string.format(
+        "[snouty][assert][cat] Assertion @ 0x%04x (\"%s\")",
+        assert_obj.body.location.begin_line,
+        assertion_id
+    ));
     -- If it's not a duplicate, add the assertion to our "inventory"...
     self._inventory[assertion_id] = assert_obj;
     -- ...then emit the catalog message.
@@ -64,7 +69,7 @@ end
 
 function AssertionManager:_check_and_emit(assert_id)
     local assert_obj <const> = self._inventory[assert_id]
-    debug_print(string.format("[_check_and_emit] Triggering assertion @ 0x%04x: %s", assert_obj.body.location.begin_line, assert_id));
+    debug_print(string.format("[snouty][assert][hit] Assertion @ 0x%04x (\"%s\")", assert_obj.body.location.begin_line, assert_id));
     local result <const> = assert_obj.check_func();
     assert_obj.body.condition = result;
     if (assert_obj.has_hit_with_condition[result] == false) then

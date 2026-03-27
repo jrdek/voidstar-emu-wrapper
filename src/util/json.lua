@@ -19,7 +19,10 @@ local function sanitize(s)
 end
 
 local function jsonify_primitive(val, valtype)
-    if (valtype == "number") or (valtype == "boolean") then
+    if (valtype == "number") then 
+        -- TODO: this doesn't handle floats!
+        return string.format("%d", val)
+    elseif (valtype == "boolean") then
         return tostring(val);
     elseif valtype == "string" then
         return '"' .. sanitize(val) .. '"';
