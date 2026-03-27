@@ -31,7 +31,7 @@ end
 
 function AssertionManager:_catalog(assert_obj)
     -- No duplicate assertion IDs are allowed.
-    local assertion_id <const> = assert_obj.body.id;
+    local assertion_id = assert_obj.body.id;
     if self._inventory[assertion_id] ~= nil
         then error(string.format(
             "Assertions must have unique IDs!\n"
@@ -55,7 +55,7 @@ function AssertionManager:_catalog(assert_obj)
     -- If it's not a duplicate, add the assertion to our "inventory"...
     self._inventory[assertion_id] = assert_obj;
     -- ...then emit the catalog message.
-    local catalog_json <const> = assert_obj:to_jsonl();
+    local catalog_json = assert_obj:to_jsonl();
     self._emitter:emit(catalog_json);
     -- We don't need to track whether assertions have been catalogged:
     -- by construction, all inventoried assertions have.
@@ -68,15 +68,16 @@ function AssertionManager:_catalog(assert_obj)
 end
 
 function AssertionManager:_check_and_emit(assert_id)
-    local assert_obj <const> = self._inventory[assert_id]
-    debug_print(string.format("[snouty][assert][hit] Assertion @ 0x%04x (\"%s\")", assert_obj.body.location.begin_line, assert_id));
-    local result <const> = assert_obj.check_func();
+    local assert_obj = self._inventory[assert_id]
+    local result = assert_obj.check_func();
+    --print(string.format("[snouty][assert][chk] Assertion @ 0x%04x: %s", assert_obj.body.location.begin_line, result and "true" or "false"))
     assert_obj.body.condition = result;
     if (assert_obj.has_hit_with_condition[result] == false) then
         assert_obj.has_hit_with_condition[result] = true;
         if type(assert_obj.get_details) == "function" then 
             assert_obj.body.details = assert_obj.get_details()
         end
+        debug_print(string.format("[snouty][assert][hit] Assertion @ 0x%04x (\"%s\")", assert_obj.body.location.begin_line, assert_id));
         self._emitter:emit(assert_obj:to_jsonl())
     end
 end
@@ -85,47 +86,47 @@ end
 -- TODO: a bunch of this code is dedupeable
 
 function AssertionManager:assert_reachable(description, address, bank, details)
-    local loc <const> = self.target_utils._build_location(address, bank);
+    local loc = self.target_utils._build_location(address, bank);
     local new_assert = build_assertion.reachable(description, loc, details);
-    local id <const> = self:_catalog(new_assert);
+    local id = self:_catalog(new_assert);
 
-    local onhit <const> = (function () self:_check_and_emit(id); end);
+    local onhit = (function () self:_check_and_emit(id); end);
     self.target_utils._register_exec(address, onhit);
 end
 
 function AssertionManager:assert_unreachable(description, address, bank, details)
-    local loc <const> = self.target_utils._build_location(address, bank);
+    local loc = self.target_utils._build_location(address, bank);
     local new_assert = build_assertion.unreachable(description, loc, details);
-    local id <const> = self:_catalog(new_assert);
+    local id = self:_catalog(new_assert);
 
-    local onhit <const> = (function () self:_check_and_emit(id); end);
+    local onhit = (function () self:_check_and_emit(id); end);
     self.target_utils._register_exec(address, onhit);
 end
 
 function AssertionManager:assert_always(description, check_func, address, bank, details)
-    local loc <const> = self.target_utils._build_location(address, bank);
+    local loc = self.target_utils._build_location(address, bank);
     local new_assert = build_assertion.always(description, check_func, loc, details);
-    local id <const> = self:_catalog(new_assert);
+    local id = self:_catalog(new_assert);
 
-    local onhit <const> = (function () self:_check_and_emit(id); end);
+    local onhit = (function () self:_check_and_emit(id); end);
     self.target_utils._register_exec(address, onhit);
 end
 
 function AssertionManager:assert_always_or_unreachable(description, check_func, address, bank, details)
-    local loc <const> = self.target_utils._build_location(address, bank);
+    local loc = self.target_utils._build_location(address, bank);
     local new_assert = build_assertion.always_or_unreachable(description, check_func, loc, details);
-    local id <const> = self:_catalog(new_assert);
+    local id = self:_catalog(new_assert);
 
-    local onhit <const> = (function () self:_check_and_emit(id); end);
+    local onhit = (function () self:_check_and_emit(id); end);
     self.target_utils._register_exec(address, onhit);
 end
 
 function AssertionManager:assert_sometimes(description, check_func, address, bank, details)
-    local loc <const> = self.target_utils._build_location(address, bank);
+    local loc = self.target_utils._build_location(address, bank);
     local new_assert = build_assertion.sometimes(description, check_func, loc, details);
-    local id <const> = self:_catalog(new_assert);
+    local id = self:_catalog(new_assert);
 
-    local onhit <const> = (function () self:_check_and_emit(id); end);
+    local onhit = (function () self:_check_and_emit(id); end);
     self.target_utils._register_exec(address, onhit);
 end
 
