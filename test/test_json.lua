@@ -1,7 +1,7 @@
 
 
-local json = require "src.util.json";
-require "src.util.array";
+local json = require "src.utils.json";
+require "src.utils.array";
 
 local function show_json(obj)
     print(json.from(obj))

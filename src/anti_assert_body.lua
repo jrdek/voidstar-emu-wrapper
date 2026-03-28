@@ -8,7 +8,7 @@ An SdkAssertion object `a = SdkAssertion:new(check_func, fields)` is a table wit
 --]]
 
 
-local json = require "src.util.json";
+local json = require "src.utils.json";
 
 
 --[[
@@ -41,7 +41,7 @@ local function _typed_index_or_nil(_table, key, typing)
     local value = _table[key];
 
     if type(typing) == "string" then
-        local valtype <const> = type(value);
+        local valtype --[[<const>]] = type(value);
         if typing == valtype
             then return value;
             else return nil;
@@ -74,7 +74,7 @@ local function _typed_index_or_err(_table, key, typing)
 end
 
 
-local ASSERTION_FIELDS_TYPING <const> = {
+local ASSERTION_FIELDS_TYPING --[[<const>]] = {
     must_hit = "boolean",
     assert_type = {"always", "sometimes", "reachability"},
     display_type = "string",
@@ -85,7 +85,7 @@ local ASSERTION_FIELDS_TYPING <const> = {
     -- `details` is basically anything, so we'll ignore it here
 }
 
-local ASSERTION_LOC_FIELDS_TYPING <const> = {
+local ASSERTION_LOC_FIELDS_TYPING --[[<const>]] = {
     class = "string",
     ["function"] = "string",
     file = "string",
@@ -124,10 +124,10 @@ SdkAssertion = {};
 Since the shape is always `{"antithesis_assert": innerValue}`,
 we don't need to recreate the outer thing each time.
 --]]
-local SDK_ASSERT_TEMPLATE <const> = '{"antithesis_assert":%s}';
+local SDK_ASSERT_TEMPLATE --[[<const>]] = '{"antithesis_assert":%s}';
 
 function SdkAssertion:to_jsonl()
-    local inner_jsonl <const> = json.from(self.body);
+    local inner_jsonl --[[<const>]] = json.from(self.body);
     return string.format(SDK_ASSERT_TEMPLATE, inner_jsonl);
 end
 

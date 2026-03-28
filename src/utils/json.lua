@@ -6,7 +6,7 @@ In line with that, there are some limitations to note:
     2. To JSONify arrays, you need to use `Array({'a', 'b', 'c'})` and not just `{'a', 'b', 'c'}`.
 --]]
 
-local IS_UNIMPLEMENTED_TYPE <const> = {
+local IS_UNIMPLEMENTED_TYPE --[[<const>]] = {
     ["userdata"] = true,
     ["thread"] = true,
     ["function"] = true,
@@ -35,7 +35,7 @@ local jsonify;
 local function jsonify_array(val)
     local item_jsons = {};
     for _, v in ipairs(val) do
-        local item_json <const> = jsonify(v);
+        local item_json --[[<const>]] = jsonify(v);
         table.insert(item_jsons, item_json);
     end
     return string.format("[%s]", table.concat(item_jsons, ','));
@@ -48,7 +48,7 @@ end
 local function jsonify_object(val)
     local entry_jsons = {};
     for k, v in pairs(val) do
-        local entry_json <const> = jsonify_obj_entry(k, v);
+        local entry_json --[[<const>]] = jsonify_obj_entry(k, v);
         table.insert(entry_jsons, entry_json);
     end
     return string.format("{%s}", table.concat(entry_jsons, ','));
@@ -56,7 +56,7 @@ end
 
 
 function jsonify(val)
-    local valtype <const> = type(val);
+    local valtype --[[<const>]] = type(val);
     if IS_UNIMPLEMENTED_TYPE[valtype] then
         error("jsonify() unimplemented for type " .. valtype, 2);
     elseif valtype == "table" then

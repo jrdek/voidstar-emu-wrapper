@@ -1,9 +1,13 @@
-official_python_sdk/
-fceux/
+### reference material
+reference/*/
 
+### various places per-run output might go
+output/
 test/output/
 
-test/mario_disas.txt
+### scratch files which aren't worth persisting upstream
+brainstorm/
+test/scratch/
 
-test/example_mario.lua
-test/scratch.lua
+### rom files (but I'd like to keep the directory)
+roms/*

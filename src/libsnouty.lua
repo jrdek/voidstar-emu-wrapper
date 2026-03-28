@@ -1,13 +1,12 @@
-
-
 --[[
 This file defines and instantiates `Snouty`, which is basically the entire "SDK wrapper".
 --]]
+-- TODO: make paths work nicely
 
-require "src.util.debug_print";
+require "src.utils.debug_print";
 debug_print.enable();
 
-require "src.util.array";
+require "src.utils.array";
 require "src.anti_assert_manager";
 
 Snouty = {};
@@ -19,7 +18,7 @@ shouldn't be needed by a script requiring libsnouty.
 They're included anyways, for debugging and tidiness.
 --]]
 
-local SDK_JSONL_PATH <const> = require "src.anti_files".SDK_JSONL;
+local SDK_JSONL_PATH --[[<const>]] = require "src.anti_files".SDK_JSONL;
 Snouty._emitter = require "src.anti_emitter".Emitter:new(SDK_JSONL_PATH);
 
 Snouty._utils = {}
@@ -31,13 +30,13 @@ Snouty._assertion_manager = AssertionManager:new("FCEUX", Snouty._emitter);
 
 -- Reads a byte from /dev/urandom, then returns it as a number.
 function Snouty.get_byte()
-    local byte <const> = assert(Snouty._files.INPUT_DEVICE.handle:read(1));
-    local hex <const> = string.byte(byte);
+    local byte --[[<const>]] = assert(Snouty._files.INPUT_DEVICE.handle:read(1));
+    local hex --[[<const>]] = string.byte(byte);
     return hex;
 end
 
 function Snouty.emit_setup_complete(details)
-    local msg <const> = Snouty._utils.build_setup_complete_msg(details);
+    local msg --[[<const>]] = Snouty._utils.build_setup_complete_msg(details);
     Snouty._emitter:emit(msg);
     -- NOTE: This should only be emitted *once* in a branch.
 end

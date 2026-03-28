@@ -7,8 +7,8 @@ local build = {};
 local SdkAssertion = require "src.anti_assert_body";
 
 
-local LAMBDA_TRUE <const> = function () return true end;
-local LAMBDA_FALSE <const> = function () return false end;
+local LAMBDA_TRUE --[[<const>]] = function () return true end;
+local LAMBDA_FALSE --[[<const>]] = function () return false end;
 
 
 function build.reachable(description, location, get_details)

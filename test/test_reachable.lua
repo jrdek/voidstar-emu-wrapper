@@ -1,8 +1,8 @@
 
---print = require "test.handy.detailed_print".detailed.print;
+--print = require "test.utils.detailed_print".detailed.print;
 
 
-require "test.handy.fake_fceux";
+require "test.utils.fake_fceux";
 
 require "src.libsnouty";
 

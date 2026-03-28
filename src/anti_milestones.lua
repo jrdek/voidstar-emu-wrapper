@@ -5,7 +5,7 @@ local module = {};
 
 
 
-local json = require "src.util.json";
+local json = require "src.utils.json";
 
 -- {"antithesis_setup": { "status": "complete", "details": null }}
 function module.build_setup_complete_msg(details_val)
