@@ -7,8 +7,8 @@ local SDK_PATHS = {};
 
 SDK_PATHS.INPUT_DEVICE = "/dev/urandom";
 
-local _ANTITHESIS_OUTPUT_DIR --[[<const>]] = os.getenv("ANTITHESIS_OUTPUT_DIR");
-SDK_PATHS.SDK_JSONL = _ANTITHESIS_OUTPUT_DIR .. "/sdk.jsonl";
+local ANTITHESIS_OUTPUT_DIR --[[<const>]] = os.getenv("ANTITHESIS_OUTPUT_DIR");
+SDK_PATHS.SDK_JSONL = ANTITHESIS_OUTPUT_DIR .. "/sdk.jsonl";
 
 
 

@@ -13,18 +13,18 @@ function module.Emitter:new(path)
     setmetatable(new_instance, self);
     self.__index = self;
     
-    new_instance._path = path;
+    new_instance.path = path;
 
     local handle = assert(io.open(path, "w"));
     handle:setvbuf("no");
-    new_instance._handle = handle;
+    new_instance.handle = handle;
 
     return new_instance;
 end
 
 function module.Emitter:emit(line)
-    self._handle:write(line);
-    self._handle:write("\n");
+    self.handle:write(line);
+    self.handle:write("\n");
 end
 
 

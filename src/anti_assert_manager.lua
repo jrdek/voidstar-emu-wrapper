@@ -20,8 +20,8 @@ function AssertionManager:new(target, emitter)
     setmetatable(new_instance, self);
     self.__index = self;
 
-    new_instance._inventory = {};
-    new_instance._emitter = emitter;
+    new_instance.inventory = {};
+    new_instance.emitter = emitter;
 
     new_instance.target_utils = all_targets[target];
 
@@ -29,10 +29,10 @@ function AssertionManager:new(target, emitter)
 end
 
 
-function AssertionManager:_catalog(assert_obj)
+function AssertionManager:catalog(assert_obj)
     -- No duplicate assertion IDs are allowed.
     local assertion_id = assert_obj.body.id;
-    if self._inventory[assertion_id] ~= nil
+    if self.inventory[assertion_id] ~= nil
         then error(string.format(
             "Assertions must have unique IDs!\n"
             .. "ID: %s\n"
@@ -42,9 +42,9 @@ function AssertionManager:_catalog(assert_obj)
             assert_obj.body.assert_type,
             assert_obj.body.location.file,
             assert_obj.body.location.begin_line,
-            self._inventory[assertion_id].body.assert_type,
-            self._inventory[assertion_id].body.file,
-            self._inventory[assertion_id].body.location.begin_line
+            self.inventory[assertion_id].body.assert_type,
+            self.inventory[assertion_id].body.file,
+            self.inventory[assertion_id].body.location.begin_line
         ));
     end
     debug_print(string.format(
@@ -53,10 +53,10 @@ function AssertionManager:_catalog(assert_obj)
         assertion_id
     ));
     -- If it's not a duplicate, add the assertion to our "inventory"...
-    self._inventory[assertion_id] = assert_obj;
+    self.inventory[assertion_id] = assert_obj;
     -- ...then emit the catalog message.
     local catalog_json = assert_obj:to_jsonl();
-    self._emitter:emit(catalog_json);
+    self.emitter:emit(catalog_json);
     -- We don't need to track whether assertions have been catalogged:
     -- by construction, all inventoried assertions have.
 
@@ -67,8 +67,8 @@ function AssertionManager:_catalog(assert_obj)
     return assertion_id;
 end
 
-function AssertionManager:_check_and_emit(assert_id)
-    local assert_obj = self._inventory[assert_id]
+function AssertionManager:check_and_emit(assert_id)
+    local assert_obj = self.inventory[assert_id]
     local result = assert_obj.check_func();
     assert_obj.body.condition = result;
     -- If we haven't hit with this value before,
@@ -86,7 +86,7 @@ function AssertionManager:_check_and_emit(assert_id)
             assert_obj.body.location.begin_line,
             assert_id
         ));
-        self._emitter:emit(assert_obj:to_jsonl())
+        self.emitter:emit(assert_obj:to_jsonl())
         -- Check if we should deregister the handler.
         local can_deregister = true;
         for _, value_seen in pairs(assert_obj.done) do
@@ -109,47 +109,47 @@ end
 
 function AssertionManager:assert_reachable(defn)
     -- this mutates `defn`, but it's fine i guess
-    defn.location = self.target_utils._build_sdk_location(defn.location);
+    defn.location = self.target_utils.build_sdk_location(defn.location);
     local new_assert = build_assertion.reachable(defn);
-    local id = self:_catalog(new_assert);
+    local id = self:catalog(new_assert);
 
-    local onhit = (function () self:_check_and_emit(id); end);
-    self.target_utils._register_exec(id, defn.location, onhit);
+    local onhit = (function () self:check_and_emit(id); end);
+    self.target_utils.register_exec(id, defn.location, onhit);
 end
 
 function AssertionManager:assert_unreachable(defn)
-    defn.location = self.target_utils._build_sdk_location(defn.location);
+    defn.location = self.target_utils.build_sdk_location(defn.location);
     local new_assert = build_assertion.unreachable(defn);
-    local id = self:_catalog(new_assert);
+    local id = self:catalog(new_assert);
 
-    local onhit = (function () self:_check_and_emit(id); end);
-    self.target_utils._register_exec(id, defn.location, onhit);
+    local onhit = (function () self:check_and_emit(id); end);
+    self.target_utils.register_exec(id, defn.location, onhit);
 end
 
 function AssertionManager:assert_always(defn)
-    defn.location = self.target_utils._build_sdk_location(defn.location);
+    defn.location = self.target_utils.build_sdk_location(defn.location);
     local new_assert = build_assertion.always(defn);
-    local id = self:_catalog(new_assert);
+    local id = self:catalog(new_assert);
 
-    local onhit = (function () self:_check_and_emit(id); end);
-    self.target_utils._register_exec(id, defn.location, onhit);
+    local onhit = (function () self:check_and_emit(id); end);
+    self.target_utils.register_exec(id, defn.location, onhit);
 end
 
 function AssertionManager:assert_always_or_unreachable(defn)
-    defn.location = self.target_utils._build_sdk_location(defn.location);
+    defn.location = self.target_utils.build_sdk_location(defn.location);
     local new_assert = build_assertion.always_or_unreachable(defn);
-    local id = self:_catalog(new_assert);
+    local id = self:catalog(new_assert);
 
-    local onhit = (function () self:_check_and_emit(id); end);
-    self.target_utils._register_exec(id, defn.location, onhit);
+    local onhit = (function () self:check_and_emit(id); end);
+    self.target_utils.register_exec(id, defn.location, onhit);
 end
 
 function AssertionManager:assert_sometimes(defn)
-    defn.location = self.target_utils._build_sdk_location(defn.location);
+    defn.location = self.target_utils.build_sdk_location(defn.location);
     local new_assert = build_assertion.sometimes(defn);
-    local id = self:_catalog(new_assert);
+    local id = self:catalog(new_assert);
 
-    local onhit = (function () self:_check_and_emit(id); end);
-    self.target_utils._register_exec(id, defn.location, onhit);
+    local onhit = (function () self:check_and_emit(id); end);
+    self.target_utils.register_exec(id, defn.location, onhit);
 end
 

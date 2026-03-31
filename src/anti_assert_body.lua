@@ -37,8 +37,8 @@ The Antithesis SDK's assertion JSONs have this structure:
 --]]
 
 
-local function typed_index_or_nil(_table, key, typing)
-    local value = _table[key];
+local function typed_index_or_nil(tbl, key, typing)
+    local value = tbl[key];
 
     if type(typing) == "string" then
         local valtype --[[<const>]] = type(value);
@@ -57,17 +57,17 @@ local function typed_index_or_nil(_table, key, typing)
         return nil;
     end
     -- this line should never be reached
-    error("_typed_index_or_nil() received bad typing " .. tostring(typing), 2);
+    error("typed_index_or_nil() received bad typing " .. tostring(typing), 2);
 end
 
-local function typed_index_or_err(_table, key, typing)
-    -- NOTE: this will straight up break if _table is not a table
+local function typed_index_or_err(tbl, key, typing)
+    -- NOTE: this will straight up break if tbl is not a table
     return assert(
-        typed_index_or_nil(_table, key, typing),
+        typed_index_or_nil(tbl, key, typing),
         string.format(
             "Value for key `%s` is `%s` (doesn't match `%s`)",
             key,
-            tostring(_table[key]),
+            tostring(tbl[key]),
             tostring(typing)
         )
     )

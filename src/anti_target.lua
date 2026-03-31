@@ -3,7 +3,7 @@ This file returns a table of tables corresponding to emulator-specific functiona
 --]]
 local module = {
     FCEUX = {
-        _handlers = {
+        handlers = {
             execute = {}
         }
     }
@@ -54,7 +54,7 @@ All three `memory.register${OP}` functions have two very important quirks:
        all of the trigger-on-$OP handlers at `addr`. This also means that only one $OP
        handler can be active on an address at once.
 
-`module.FCEUX._register_exec` wraps `memory.registerexecute` to work around these quirks.
+`module.FCEUX.register_exec` wraps `memory.registerexecute` to work around these quirks.
 For now, it won't support `size`.
 --]]
 
@@ -70,15 +70,15 @@ local function build_metahandler(handlers)
     return metahandler;
 end
 
-function module.FCEUX._register_exec(id, loc, onhit)
+function module.FCEUX.register_exec(id, loc, onhit)
     assert(onhit, "Can't register nil; use deregister_exec() to deregister")
     --local locval = (0x10000 * loc.bank) + loc.address;
     -- ^ FIXME: banking needs extra logic...
     local locval = loc.begin_line;
-    local current_onhits = module.FCEUX._handlers.execute[locval];
+    local current_onhits = module.FCEUX.handlers.execute[locval];
     if current_onhits == nil then
-        module.FCEUX._handlers.execute[locval] = {};
-        current_onhits = module.FCEUX._handlers.execute[locval]
+        module.FCEUX.handlers.execute[locval] = {};
+        current_onhits = module.FCEUX.handlers.execute[locval]
     end
     table.insert(
         current_onhits,
@@ -91,7 +91,7 @@ end
 function module.FCEUX.deregister_exec(id, loc)  -- CHECKME needs testing
     -- TODO: as in register_exec, account for bank in locval
     local locval = loc.begin_line;
-    local current_onhits = module.FCEUX._handlers.execute[locval];
+    local current_onhits = module.FCEUX.handlers.execute[locval];
     assert(current_onhits, string.format("Can't deregister_exec: no handlers at %d", locval));
     if current_onhits[id] ~= nil then
         current_onhits[id] = nil;
@@ -101,7 +101,7 @@ function module.FCEUX.deregister_exec(id, loc)  -- CHECKME needs testing
 end
 
 -- n.b.: this is actually bound to the *system*, not the *emulator*
-function module.FCEUX._build_sdk_location(nes_loc)
+function module.FCEUX.build_sdk_location(nes_loc)
     assert(nes_loc.address, "Any assertion must have an address");
     local bank = nes_loc.bank or 0;
     local sdk_location = {
