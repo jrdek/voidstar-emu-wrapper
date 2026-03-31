@@ -63,38 +63,55 @@ local function build_metahandler(handlers)
         return nil;
     end
     local metahandler = function ()
-        for _,handler in ipairs(handlers) do
-            handler();
+        for _,named_handler in ipairs(handlers) do
+            named_handler.onhit();
         end
     end;
     return metahandler;
 end
 
-function module.FCEUX._register_exec(addr, onhit)
-    local current_onhits = module.FCEUX._handlers.execute[addr];
-    if onhit == nil then
-        module.FCEUX.handlers.execute[addr] = nil;
-    else
-        if current_onhits == nil then
-            module.FCEUX._handlers.execute[addr] = {};
-        end
-        table.insert(module.FCEUX._handlers.execute[addr], onhit);
-    end;
-    local metahandler = build_metahandler(module.FCEUX._handlers.execute[addr]);
-    memory.registerexecute(addr, metahandler);
+function module.FCEUX._register_exec(id, loc, onhit)
+    assert(onhit, "Can't register nil; use deregister_exec() to deregister")
+    --local locval = (0x10000 * loc.bank) + loc.address;
+    -- ^ FIXME: banking needs extra logic...
+    local locval = loc.begin_line;
+    local current_onhits = module.FCEUX._handlers.execute[locval];
+    if current_onhits == nil then
+        module.FCEUX._handlers.execute[locval] = {};
+        current_onhits = module.FCEUX._handlers.execute[locval]
+    end
+    table.insert(
+        current_onhits,
+        {id = id, onhit = onhit}
+    );
+    local metahandler = build_metahandler(current_onhits);
+    memory.registerexecute(loc.begin_line, metahandler);
+end
+
+function module.FCEUX.deregister_exec(id, loc)  -- CHECKME needs testing
+    -- TODO: as in register_exec, account for bank in locval
+    local locval = loc.begin_line;
+    local current_onhits = module.FCEUX._handlers.execute[locval];
+    assert(current_onhits, string.format("Can't deregister_exec: no handlers at %d", locval));
+    if current_onhits[id] ~= nil then
+        current_onhits[id] = nil;
+        local metahandler = build_metahandler(current_onhits);
+        memory.registerexecute(loc.begin_line, metahandler);
+    end
 end
 
 -- n.b.: this is actually bound to the *system*, not the *emulator*
-function module.FCEUX._build_location(address, bank)
-    bank = bank or 0;
-    local nes_location = {
+function module.FCEUX._build_sdk_location(nes_loc)
+    assert(nes_loc.address, "Any assertion must have an address");
+    local bank = nes_loc.bank or 0;
+    local sdk_location = {
         class = "",         -- no obvious analog, so leave it blank
         ["function"] = "",  -- TODO: maybe we could track jumps in a ROM...
         file = string.format("ROM Bank %d", bank),
-        begin_line = address,
+        begin_line = nes_loc.address,
         begin_column = 0    -- no obvious analog, so leave it blank
     };
-    return nes_location;
+    return sdk_location;
 end
 
 

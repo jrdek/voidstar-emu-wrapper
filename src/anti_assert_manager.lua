@@ -70,63 +70,86 @@ end
 function AssertionManager:_check_and_emit(assert_id)
     local assert_obj = self._inventory[assert_id]
     local result = assert_obj.check_func();
-    --print(string.format("[snouty][assert][chk] Assertion @ 0x%04x: %s", assert_obj.body.location.begin_line, result and "true" or "false"))
     assert_obj.body.condition = result;
-    if (assert_obj.has_hit_with_condition[result] == false) then
-        assert_obj.has_hit_with_condition[result] = true;
-        if type(assert_obj.get_details) == "function" then 
+    -- If we haven't hit with this value before,
+    if (assert_obj.done[result] == false) then
+        -- Mark that we now have;
+        assert_obj.done[result] = true;
+        -- Fill in `details` if available (otherwise leave it as initialized);
+        if type(assert_obj.get_details) == "function" then
             assert_obj.body.details = assert_obj.get_details()
         end
-        debug_print(string.format("[snouty][assert][hit] Assertion @ 0x%04x (\"%s\")", assert_obj.body.location.begin_line, assert_id));
+        -- Then emit the assertion.
+        debug_print(string.format(
+            "[snouty][assert][hit][%s] Assertion @ 0x%04x (\"%s\")",
+            (result and "Y") or "N",
+            assert_obj.body.location.begin_line,
+            assert_id
+        ));
         self._emitter:emit(assert_obj:to_jsonl())
+        -- Check if we should deregister the handler.
+        local can_deregister = true;
+        for _, value_seen in pairs(assert_obj.done) do
+            if not value_seen then can_deregister = false; break; end
+        end
+        -- If we should, do it.
+        if can_deregister then
+            debug_print(string.format(
+                "[snouty][assert][del] Unregistering assertion @ 0x%04x (\"%s\")",
+                assert_obj.body.location.begin_line,
+                assert_id
+            ))
+            self.target_utils.deregister_exec(assert_obj.body.id, assert_obj.body.location);
+        end
     end
 end
 
 
 -- TODO: a bunch of this code is dedupeable
 
-function AssertionManager:assert_reachable(description, address, bank, details)
-    local loc = self.target_utils._build_location(address, bank);
-    local new_assert = build_assertion.reachable(description, loc, details);
+function AssertionManager:assert_reachable(defn)
+    -- this mutates `defn`, but it's fine i guess
+    defn.location = self.target_utils._build_sdk_location(defn.location);
+    local new_assert = build_assertion.reachable(defn);
     local id = self:_catalog(new_assert);
 
     local onhit = (function () self:_check_and_emit(id); end);
-    self.target_utils._register_exec(address, onhit);
+    self.target_utils._register_exec(id, defn.location, onhit);
 end
 
-function AssertionManager:assert_unreachable(description, address, bank, details)
-    local loc = self.target_utils._build_location(address, bank);
-    local new_assert = build_assertion.unreachable(description, loc, details);
+function AssertionManager:assert_unreachable(defn)
+    defn.location = self.target_utils._build_sdk_location(defn.location);
+    local new_assert = build_assertion.unreachable(defn);
     local id = self:_catalog(new_assert);
 
     local onhit = (function () self:_check_and_emit(id); end);
-    self.target_utils._register_exec(address, onhit);
+    self.target_utils._register_exec(id, defn.location, onhit);
 end
 
-function AssertionManager:assert_always(description, check_func, address, bank, details)
-    local loc = self.target_utils._build_location(address, bank);
-    local new_assert = build_assertion.always(description, check_func, loc, details);
+function AssertionManager:assert_always(defn)
+    defn.location = self.target_utils._build_sdk_location(defn.location);
+    local new_assert = build_assertion.always(defn);
     local id = self:_catalog(new_assert);
 
     local onhit = (function () self:_check_and_emit(id); end);
-    self.target_utils._register_exec(address, onhit);
+    self.target_utils._register_exec(id, defn.location, onhit);
 end
 
-function AssertionManager:assert_always_or_unreachable(description, check_func, address, bank, details)
-    local loc = self.target_utils._build_location(address, bank);
-    local new_assert = build_assertion.always_or_unreachable(description, check_func, loc, details);
+function AssertionManager:assert_always_or_unreachable(defn)
+    defn.location = self.target_utils._build_sdk_location(defn.location);
+    local new_assert = build_assertion.always_or_unreachable(defn);
     local id = self:_catalog(new_assert);
 
     local onhit = (function () self:_check_and_emit(id); end);
-    self.target_utils._register_exec(address, onhit);
+    self.target_utils._register_exec(id, defn.location, onhit);
 end
 
-function AssertionManager:assert_sometimes(description, check_func, address, bank, details)
-    local loc = self.target_utils._build_location(address, bank);
-    local new_assert = build_assertion.sometimes(description, check_func, loc, details);
+function AssertionManager:assert_sometimes(defn)
+    defn.location = self.target_utils._build_sdk_location(defn.location);
+    local new_assert = build_assertion.sometimes(defn);
     local id = self:_catalog(new_assert);
 
     local onhit = (function () self:_check_and_emit(id); end);
-    self.target_utils._register_exec(address, onhit);
+    self.target_utils._register_exec(id, defn.location, onhit);
 end
 

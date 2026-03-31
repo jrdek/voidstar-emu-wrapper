@@ -1,9 +1,9 @@
 --[[
-This file returns the class `SdkAssertion`.
+This file returns subclasses of the abstract base class `BaseSdkAssertion`.
 
-An SdkAssertion object `a = SdkAssertion:new(check_func, fields)` is a table with:
+A BaseSdkAssertion object `a = BaseSdkAssertion:new(check_func, fields)` is a table with:
     - a.body: the inner body of an Antithesis SDK assertion, stored as a table  
-    - a.has_hit_with_condition: a table mapping booleans to booleans.
+    - a.done: a table mapping booleans to booleans.
     - a:to_jsonl(): returns `a.body` turned into JSONL.
 --]]
 
@@ -37,7 +37,7 @@ The Antithesis SDK's assertion JSONs have this structure:
 --]]
 
 
-local function _typed_index_or_nil(_table, key, typing)
+local function typed_index_or_nil(_table, key, typing)
     local value = _table[key];
 
     if type(typing) == "string" then
@@ -60,10 +60,10 @@ local function _typed_index_or_nil(_table, key, typing)
     error("_typed_index_or_nil() received bad typing " .. tostring(typing), 2);
 end
 
-local function _typed_index_or_err(_table, key, typing)
+local function typed_index_or_err(_table, key, typing)
     -- NOTE: this will straight up break if _table is not a table
     return assert(
-        _typed_index_or_nil(_table, key, typing),
+        typed_index_or_nil(_table, key, typing),
         string.format(
             "Value for key `%s` is `%s` (doesn't match `%s`)",
             key,
@@ -93,17 +93,17 @@ local ASSERTION_LOC_FIELDS_TYPING --[[<const>]] = {
     begin_column = "number",
 }
 
-local function _validate_assertion_fields(fields)
+local function validate_assertion_fields(fields)
     local filled = {};
     -- since every field is mandatory, check from the template
     for k,t in pairs(ASSERTION_FIELDS_TYPING) do
-        filled[k] = _typed_index_or_err(fields, k, t);
+        filled[k] = typed_index_or_err(fields, k, t);
     end
 
     -- similarly, check `location`
     filled.location = {};
     for k,t in pairs(ASSERTION_LOC_FIELDS_TYPING) do
-        filled.location[k] = _typed_index_or_err(fields.location, k, t);
+        filled.location[k] = typed_index_or_err(fields.location, k, t);
     end
 
     -- CHECKME: everything below this, especially for catalogging
@@ -115,9 +115,9 @@ end
 
 
 --[[
-"Class" for stateful assertion tracking/emitting.
+"Base class" for stateful assertion tracking/emitting.
 --]]
-SdkAssertion = {};
+local BaseSdkAssertion = {};
 
 
 --[[
@@ -126,26 +126,23 @@ we don't need to recreate the outer thing each time.
 --]]
 local SDK_ASSERT_TEMPLATE --[[<const>]] = '{"antithesis_assert":%s}';
 
-function SdkAssertion:to_jsonl()
+function BaseSdkAssertion:to_jsonl()
     local inner_jsonl --[[<const>]] = json.from(self.body);
     return string.format(SDK_ASSERT_TEMPLATE, inner_jsonl);
 end
 
 
-function SdkAssertion:new(check_func, fields, get_details)
+function BaseSdkAssertion:new(check_func, fields, get_details)
     local new_a = {};
     setmetatable(new_a, self);
     self.__index = self;
 
-    new_a.has_hit_with_condition = {
-        [true] = false,
-        [false] = false
-    }
+    new_a.done = {};
 
     new_a.check_func = check_func;
     new_a.get_details = get_details;
 
-    new_a.body = _validate_assertion_fields(fields);
+    new_a.body = validate_assertion_fields(fields);
     new_a.body.hit = false;
     new_a.body.details = new_a.body.details or json.null;
 
@@ -153,5 +150,46 @@ function SdkAssertion:new(check_func, fields, get_details)
 end
 
 
+--[[
+It'll be convenient to unregister assertions after they're no longer needed.
+From the docs:
+> There is no benefit to sending more than one true evaluation or more than
+> one false evaluation.
 
-return SdkAssertion;
+Since Reachable/Unreachable assertions only ever evaluate true/false
+respectively, we can make them easy to unregister:
+--]]
+
+local OneValuedSdkAssertion = {};
+setmetatable(OneValuedSdkAssertion, BaseSdkAssertion)
+
+function OneValuedSdkAssertion:new(hit_func, fields, get_details)
+    local new_a = BaseSdkAssertion:new(hit_func, fields, get_details);
+    setmetatable(new_a, self);
+    self.__index = self;
+
+    local hit_val = hit_func();
+    new_a.done[hit_val] = false;
+    return new_a;
+end
+
+
+--[[
+Similarly, we can declare TwoValuedSdkAssertion:
+--]]
+local TwoValuedSdkAssertion = {};
+setmetatable(TwoValuedSdkAssertion, BaseSdkAssertion);
+
+function TwoValuedSdkAssertion:new(check_func, fields, get_details)
+    local new_a = BaseSdkAssertion:new(check_func, fields, get_details);
+    setmetatable(new_a, self);
+    self.__index = self;
+
+    new_a.done[true] = false;
+    new_a.done[false] = false;
+    return new_a;
+end
+
+
+
+return {OneValued = OneValuedSdkAssertion, TwoValued = TwoValuedSdkAssertion};

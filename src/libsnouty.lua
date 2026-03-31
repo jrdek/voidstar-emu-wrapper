@@ -46,24 +46,24 @@ end
 
 Snouty.assert = {};
 
-function Snouty.assert.reachable(description, address, bank, get_details)
-    return Snouty._assertion_manager:assert_reachable(description, address, bank, get_details);
+function Snouty.assert.reachable(defn)
+    return Snouty._assertion_manager:assert_reachable(defn);
 end
 
-function Snouty.assert.unreachable(description, address, bank, get_details)
-    return Snouty._assertion_manager:assert_unreachable(description, address, bank, get_details);
+function Snouty.assert.unreachable(defn)
+    return Snouty._assertion_manager:assert_unreachable(defn);
 end
 
-function Snouty.assert.always(description, check_func, address, bank, get_details)
-    return Snouty._assertion_manager:assert_always(description, check_func, address, bank, get_details)
+function Snouty.assert.always(defn)
+    return Snouty._assertion_manager:assert_always(defn)
 end
 
-function Snouty.assert.always_or_unreachable(description, check_func, address, bank, get_details)
-    return Snouty._assertion_manager:assert_always_or_unreachable(description, check_func, address, bank, get_details)
+function Snouty.assert.always_or_unreachable(defn)
+    return Snouty._assertion_manager:assert_always_or_unreachable(defn)
 end
 
-function Snouty.assert.sometimes(description, check_func, address, bank, get_details)
-    return Snouty._assertion_manager:assert_sometimes(description, check_func, address, bank, get_details)
+function Snouty.assert.sometimes(defn)
+    return Snouty._assertion_manager:assert_sometimes(defn)
 end
 
 -- (TODO: more of these!)

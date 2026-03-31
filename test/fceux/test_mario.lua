@@ -65,25 +65,30 @@ end
 
 --[[ Assertions ]]--
 
-Snouty.assert.reachable(
-    "RESET vector addr is reachable",
-    addr.routine.RESET,
-    0,  -- bank
-    {}
-)
+Snouty.assert.reachable({
+    description = "RESET vector addr is reachable",
+    location = {
+        address = addr.routine.RESET,
+        bank = 0
+    },
+})
 
-Snouty.assert.reachable(
-    "Flagpole-hit routine is reachable",
-    0xb2a4,
-    0,
-    get_metadata
-)
+Snouty.assert.reachable({
+    description = "Flagpole-hit routine is reachable",
+    location = {
+        address = 0xb2a4,
+        bank = 0
+    },
+    get_details = get_metadata
+})
 
-Snouty.assert.sometimes(
-    "Current game-time is 395",
-    time_left_is(395),
-    addr.routine.NMI,
-    0,
-    get_metadata
-)
+Snouty.assert.sometimes({
+    description = "Current game-time is 395",
+    condition = time_left_is(395),
+    location = {
+        address = addr.routine.NMI,
+        bank = 0,
+    },
+    get_details = get_metadata
+})
 

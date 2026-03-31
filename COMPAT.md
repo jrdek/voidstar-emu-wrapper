@@ -1,7 +1,7 @@
 # Issues and how to fix them
 - Our FCEUX uses lua 5.1, but this project is 5.5.
-  - Delete all `<const>`s.
-    - `(\s*<const>\s*)=` -> ` =`
+  - Remove all `<const>`s.
+    - `(\s*<const>\s*)=` -> `--[[<const>]]`
   - Note that `string.format("%s", arg)` requires `arg` to be a string!
 - Passing environment variables doesn't seem to work.
   - In `src/anti_files.lua`, hardcode `ANTITHESIS_OUTPUT_DIR` if needed.
