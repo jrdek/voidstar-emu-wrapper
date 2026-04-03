@@ -11,3 +11,4 @@ test/scratch/
 
 ### rom files (but I'd like to keep the directory)
 roms/*
+run/golden_movie.sh

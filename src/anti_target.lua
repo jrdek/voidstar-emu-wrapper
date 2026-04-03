@@ -3,9 +3,16 @@ This file returns a table of tables corresponding to emulator-specific functiona
 --]]
 local module = {
     FCEUX = {
-        handlers = {
+        assertion_handlers = {
             execute = {}
-        }
+        },
+        -- register_exec(),
+        -- deregister_exec(),
+        -- build_sdk_location(),
+        -- set_joypad_for_player(),
+        -- init_emulator(),
+        -- advance_frame(),
+        -- get_frame_count(),
     }
 };
 
@@ -75,10 +82,10 @@ function module.FCEUX.register_exec(id, loc, onhit)
     --local locval = (0x10000 * loc.bank) + loc.address;
     -- ^ FIXME: banking needs extra logic...
     local locval = loc.begin_line;
-    local current_onhits = module.FCEUX.handlers.execute[locval];
+    local current_onhits = module.FCEUX.assertion_handlers.execute[locval];
     if current_onhits == nil then
-        module.FCEUX.handlers.execute[locval] = {};
-        current_onhits = module.FCEUX.handlers.execute[locval]
+        module.FCEUX.assertion_handlers.execute[locval] = {};
+        current_onhits = module.FCEUX.assertion_handlers.execute[locval]
     end
     table.insert(
         current_onhits,
@@ -91,7 +98,7 @@ end
 function module.FCEUX.deregister_exec(id, loc)  -- CHECKME needs testing
     -- TODO: as in register_exec, account for bank in locval
     local locval = loc.begin_line;
-    local current_onhits = module.FCEUX.handlers.execute[locval];
+    local current_onhits = module.FCEUX.assertion_handlers.execute[locval];
     assert(current_onhits, string.format("Can't deregister_exec: no handlers at %d", locval));
     if current_onhits[id] ~= nil then
         current_onhits[id] = nil;
@@ -114,6 +121,40 @@ function module.FCEUX.build_sdk_location(nes_loc)
     return sdk_location;
 end
 
+function module.FCEUX.set_joypad_for_player(player, buttons)
+    joypad.set(player, buttons);
+end
+
+
+local function fceux_pause_wrap(func)
+    return function()
+        emu.unpause();
+        func();
+        emu.pause();
+    end
+end
+
+
+module.FCEUX.init_emulator = fceux_pause_wrap(
+    function ()
+        -- must advance past one dead frame on reset
+        debug_print("[snouty][fceux] Discarding dead frame.");
+        emu.frameadvance();
+    end
+)
+
+module.FCEUX.advance_frame = fceux_pause_wrap(emu.frameadvance)
+
+module.FCEUX.soft_reset = fceux_pause_wrap(
+    function()
+        emu.softreset();
+        module.FCEUX.init_emulator();
+    end
+)
+
+function module.FCEUX.get_frame_count()
+    return emu.framecount();
+end
 
 
 return module;

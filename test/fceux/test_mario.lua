@@ -1,7 +1,7 @@
-
-
+emu.pause();  -- CHECKME
 require "src.libsnouty";
 
+debug_print.enable();
 
 --[[ Important addresses ]]--
 local addr = {
@@ -9,6 +9,7 @@ local addr = {
         RESET = 0x8000,
         NMI = 0x8082,  -- called every frame
         FlagpoleSlide = 0xb2a4,
+        PlayerEndLevel = 0xb2ca,
     },
     var = {
         WorldNumber = 0x075f,
@@ -74,9 +75,9 @@ Snouty.assert.reachable({
 })
 
 Snouty.assert.reachable({
-    description = "Flagpole-hit routine is reachable",
+    description = "End-of-level routine is reachable",
     location = {
-        address = 0xb2a4,
+        address = addr.routine.PlayerEndLevel,
         bank = 0
     },
     get_details = get_metadata
@@ -91,4 +92,13 @@ Snouty.assert.sometimes({
     },
     get_details = get_metadata
 })
+
+
+-- now GOOOOO
+local movie_path = "path-to-fm2.fm2";
+local getter_args = {movie = {path = movie_path, format = "fm2"}};
+
+Snouty.setup_input_getter(getter_args);
+
+Snouty.go()
 
