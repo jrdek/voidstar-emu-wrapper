@@ -1,6 +1,5 @@
-emu.pause();  -- CHECKME
+-- emu.pause();  -- CHECKME
 require "src.libsnouty";
-
 debug_print.enable();
 
 --[[ Important addresses ]]--
@@ -26,9 +25,9 @@ local addr = {
 
 local function getTimeLeft()
     -- timer is stored as 3 bytes of BCD
-    local time = 100 * memory.readbyte(addr.var.GameTimerDisplay)
-    time = time + 10 * memory.readbyte(addr.var.GameTimerDisplay + 1)
-    time = time + memory.readbyte(addr.var.GameTimerDisplay + 2)
+    local time = 100 * Snouty.target.get_byte_at_cpu_addr(addr.var.GameTimerDisplay)
+    time = time + 10 * Snouty.target.get_byte_at_cpu_addr(addr.var.GameTimerDisplay + 1)
+    time = time + Snouty.target.get_byte_at_cpu_addr(addr.var.GameTimerDisplay + 2)
     return time
 end
 
@@ -43,15 +42,15 @@ end
 --[[ `details` generators ]]--
 local function get_emu_metadata()
     return {
-        frame = emu.framecount(),
-        cycle = debugger.getcyclescount(),
+        frame = Snouty.target.get_frame_count(),
+        -- cycle = debugger.getcyclescount(),
     }
 end
 
 local function get_game_metadata()
     return {
-        level = memory.readbyte(addr.var.LevelNumber),
-        world = memory.readbyte(addr.var.WorldNumber),
+        level = Snouty.target.get_byte_at_cpu_addr(addr.var.LevelNumber),
+        world = Snouty.target.get_byte_at_cpu_addr(addr.var.WorldNumber),
         level_time_left = getTimeLeft(),
     }
 end
@@ -94,11 +93,17 @@ Snouty.assert.sometimes({
 })
 
 
+
 -- now GOOOOO
-local movie_path = "path-to-fm2.fm2";
-local getter_args = {movie = {path = movie_path, format = "fm2"}};
+
+local movie_name = "happylee-supermariobros,warped.fm2";
+
+local HERE = (require "src.utils.paths").path_to_repo_root();
+local MOVIES_DIR = HERE .. "/reference/movies/";
+local getter_args = {movie = {path = MOVIES_DIR .. movie_name, format = "fm2"}};
 
 Snouty.setup_input_getter(getter_args);
 
-Snouty.go()
+-- Snouty.go()
+Snouty.target.init_emulator();
 

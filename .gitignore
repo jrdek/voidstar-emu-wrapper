@@ -1,5 +1,6 @@
 ### reference material
 reference/*/
+!reference/mario_disas
 
 ### various places per-run output might go
 output/

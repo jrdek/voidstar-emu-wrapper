@@ -1,26 +1,13 @@
---[[
-This file returns a table of tables corresponding to emulator-specific functionality.
---]]
-local module = {
-    FCEUX = {
-        assertion_handlers = {
-            execute = {}
-        },
-        -- register_exec(),
-        -- deregister_exec(),
-        -- build_sdk_location(),
-        -- set_joypad_for_player(),
-        -- init_emulator(),
-        -- advance_frame(),
-        -- get_frame_count(),
+--[[ Interface for working with the FCEUX NES emulator. ]]--
+local target_helpers = require "src.target.generic";
+local targFCEUX = {
+    assertion_handlers = {
+        execute = {}
     }
 };
 
 
-
--------------------------
---[[ STUFF FOR FCEUX ]]--
--------------------------
+targFCEUX.get_byte_at_cpu_addr = memory.readbyte;
 
 --[[
 When a Lua script is passed to FCEUX, it runs with several extra libraries in scope.
@@ -61,54 +48,44 @@ All three `memory.register${OP}` functions have two very important quirks:
        all of the trigger-on-$OP handlers at `addr`. This also means that only one $OP
        handler can be active on an address at once.
 
-`module.FCEUX.register_exec` wraps `memory.registerexecute` to work around these quirks.
+`targFCEUX.register_exec` wraps `memory.registerexecute` to work around these quirks.
 For now, it won't support `size`.
 --]]
 
-local function build_metahandler(handlers)
-    if handlers == nil then
-        return nil;
-    end
-    local metahandler = function ()
-        for _,named_handler in ipairs(handlers) do
-            named_handler.onhit();
-        end
-    end;
-    return metahandler;
-end
 
-function module.FCEUX.register_exec(id, loc, onhit)
+
+function targFCEUX.register_exec(id, loc, onhit)
     assert(onhit, "Can't register nil; use deregister_exec() to deregister")
     --local locval = (0x10000 * loc.bank) + loc.address;
     -- ^ FIXME: banking needs extra logic...
     local locval = loc.begin_line;
-    local current_onhits = module.FCEUX.assertion_handlers.execute[locval];
+    local current_onhits = targFCEUX.assertion_handlers.execute[locval];
     if current_onhits == nil then
-        module.FCEUX.assertion_handlers.execute[locval] = {};
-        current_onhits = module.FCEUX.assertion_handlers.execute[locval]
+        targFCEUX.assertion_handlers.execute[locval] = {};
+        current_onhits = targFCEUX.assertion_handlers.execute[locval]
     end
     table.insert(
         current_onhits,
         {id = id, onhit = onhit}
     );
-    local metahandler = build_metahandler(current_onhits);
+    local metahandler = target_helpers.build_metahandler(current_onhits);
     memory.registerexecute(loc.begin_line, metahandler);
 end
 
-function module.FCEUX.deregister_exec(id, loc)  -- CHECKME needs testing
+function targFCEUX.deregister_exec(id, loc)  -- CHECKME needs testing
     -- TODO: as in register_exec, account for bank in locval
     local locval = loc.begin_line;
-    local current_onhits = module.FCEUX.assertion_handlers.execute[locval];
+    local current_onhits = targFCEUX.assertion_handlers.execute[locval];
     assert(current_onhits, string.format("Can't deregister_exec: no handlers at %d", locval));
     if current_onhits[id] ~= nil then
         current_onhits[id] = nil;
-        local metahandler = build_metahandler(current_onhits);
+        local metahandler = target_helpers.build_metahandler(current_onhits);
         memory.registerexecute(loc.begin_line, metahandler);
     end
 end
 
 -- n.b.: this is actually bound to the *system*, not the *emulator*
-function module.FCEUX.build_sdk_location(nes_loc)
+function targFCEUX.build_sdk_location(nes_loc)
     assert(nes_loc.address, "Any assertion must have an address");
     local bank = nes_loc.bank or 0;
     local sdk_location = {
@@ -121,7 +98,7 @@ function module.FCEUX.build_sdk_location(nes_loc)
     return sdk_location;
 end
 
-function module.FCEUX.set_joypad_for_player(player, buttons)
+function targFCEUX.set_joypad_for_player(player, buttons)
     joypad.set(player, buttons);
 end
 
@@ -135,7 +112,7 @@ local function fceux_pause_wrap(func)
 end
 
 
-module.FCEUX.init_emulator = fceux_pause_wrap(
+targFCEUX.init_emulator = fceux_pause_wrap(
     function ()
         -- must advance past one dead frame on reset
         debug_print("[snouty][fceux] Discarding dead frame.");
@@ -143,18 +120,21 @@ module.FCEUX.init_emulator = fceux_pause_wrap(
     end
 )
 
-module.FCEUX.advance_frame = fceux_pause_wrap(emu.frameadvance)
+targFCEUX.advance_frame = fceux_pause_wrap(emu.frameadvance)
 
-module.FCEUX.soft_reset = fceux_pause_wrap(
+targFCEUX.soft_reset = fceux_pause_wrap(
     function()
         emu.softreset();
-        module.FCEUX.init_emulator();
+        targFCEUX.init_emulator();
     end
 )
 
-function module.FCEUX.get_frame_count()
+function targFCEUX.get_frame_count()
     return emu.framecount();
 end
 
+targFCEUX.pause = emu.pause;
+targFCEUX.unpause = emu.unpause;
 
-return module;
+
+return targFCEUX;

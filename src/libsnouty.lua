@@ -22,9 +22,13 @@ Snouty._utils = {}
 Snouty._utils.build_setup_complete_msg = (require "src.anti_milestones").build_setup_complete_msg
 
 
-Snouty.target_name = "FCEUX";  -- TODO: make more versatile
-Snouty.target_lib = (require "src.anti_target")[Snouty.target_name]
+Snouty.target_name =  -- TODO: make this specifiable elsewhere
+    "Mesen";
+    --"FCEUX";
+Snouty.target = require( ("src.target.%s"):format(Snouty.target_name) );
 Snouty._assertion_manager = AssertionManager:new(Snouty.target_name, Snouty._emitter);
+
+Snouty.target.pause();
 
 
 function Snouty.setup_input_getter(args)
@@ -33,24 +37,28 @@ function Snouty.setup_input_getter(args)
     debug_print("[snouty] Input getter set up!");
 end
 
+-- TODO: this should live elsewhere
+local FM2_BUTTON_ORDER --[[<const>]] = {"right", "left", "down", "up", "start", "select", "A", "B"}
 
 function Snouty.do_frame()
     -- get input for the next frame
     -- (TODO: also handle non-movie execution)
+    -- debug_print(("Frame: %d"):format(Snouty.target.get_frame_count()))
     -- debug_print("[snouty][do_frame] Getting inputs...")
     local all_inputs = Snouty.input_getter:get_next();
     if all_inputs == "softreset" then
-        debug_print("[snouty][do_frame] Soft resetting...")
-        Snouty.target_lib.soft_reset();
+        -- debug_print("[snouty][do_frame] Soft resetting...")
+        Snouty.target.soft_reset();
     else
         local p1_inputs = all_inputs[1];  -- TODO: not just p1...
         -- set them in the emulator
-        -- debug_print("[snouty][do_frame] Setting inputs...")
-        Snouty.target_lib.set_joypad_for_player(1, p1_inputs);
+        --debug_print("[snouty][do_frame] Setting inputs...")
+        Snouty.target.set_joypad_for_player(1, p1_inputs);
         -- advance.
-        Snouty.target_lib.advance_frame();
+        Snouty.target.advance_frame();
     end
     -- debug_print("[snouty][do_frame] Done.")
+    -- debug_print("")
 end
 
 
@@ -72,10 +80,10 @@ function Snouty.go(args)
     local cmd_num = 0;
 
     -- fceux, at least, needs to advance the frame once upon a reset
-    Snouty.target_lib.init_emulator();
+    Snouty.target.init_emulator();
 
     while true do
-        local frame_count = Snouty.target_lib.get_frame_count();
+        local frame_count = Snouty.target.get_frame_count();
         --[[
         debug_print(string.format(
             "[snouty][go] Currently at cmd %d :: frame %d (diff %d). Stepping by %s.",

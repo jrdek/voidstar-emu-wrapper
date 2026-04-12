@@ -1,0 +1,502 @@
+                   GreenKoopa      .eq     $00    {const}
+                   DeathMusic      .eq     %00000001 {const}
+                   GameModeValue   .eq     1      {const}
+                   GroundMusic     .eq     %00000001 {const}
+                   Sfx_BigJump     .eq     %00000001 {const}
+                   Sfx_BrickShatter .eq    %00000001 {const}
+                   Sfx_CoinGrab    .eq     %00000001 {const}
+                   World2          .eq     1      {const}
+                   BuzzyBeetle     .eq     $02    {const}
+                   GameOverMusic   .eq     %00000010 {const}
+                   Level3          .eq     2      {const}
+                   Sfx_BowserFlame .eq     %00000010 {const}
+                   Sfx_Bump        .eq     %00000010 {const}
+                   Sfx_GrowPowerUp .eq     %00000010 {const}
+                   VictoryModeValue .eq    2      {const}
+                   WaterMusic      .eq     %00000010 {const}
+                   GameOverModeValue .eq   3      {const}
+                   RedKoopa        .eq     $03    {const}
+                   Sfx_EnemyStomp  .eq     %00000100 {const}
+                   Sfx_GrowVine    .eq     %00000100 {const}
+                   UndergroundMusic .eq    %00000100 {const}
+                   VictoryMusic    .eq     %00000100 {const}
+                   World5          .eq     4      {const}
+                   HammerBro       .eq     $05    {const}
+                   World6          .eq     5      {const}
+                   Goomba          .eq     $06    {const}
+                   World7          .eq     6      {const}
+                   Bloober         .eq     $07    {const}
+                   World8          .eq     7      {const}
+                   BulletBill_FrenzyVar .eq $08    {const}
+                   CastleMusic     .eq     %00001000 {const}
+                   EndOfCastleMusic .eq    %00001000 {const}
+                   Sfx_Blast       .eq     %00001000 {const}
+                   Sfx_EnemySmack  .eq     %00001000 {const}
+                   TallEnemy       .eq     $09    {const}
+                   GreyCheepCheep  .eq     $0a    {const}
+                   RedCheepCheep   .eq     $0b    {const}
+                   Podoboo         .eq     $0c    {const}
+                   PiranhaPlant    .eq     $0d    {const}
+                   GreenParatroopaJump .eq $0e    {const}
+                   CloudMusic      .eq     %00010000 {const}
+                   Sfx_PipeDown_Injury .eq %00010000 {const}
+                   Sfx_TimerTick   .eq     %00010000 {const}
+                   Start_Button    .eq     %00010000 {const}
+                   Lakitu          .eq     $11    {const}
+                   Spiny           .eq     $12    {const}
+                   FlyCheepCheepFrenzy .eq $14    {const}
+                   FlyingCheepCheep .eq    $14    {const}
+                   Fireworks       .eq     $16    {const}
+                   BBill_CCheep_Frenzy .eq $17    {const}
+                   Stop_Frenzy     .eq     $18    {const}
+                   EndOfLevelMusic .eq     %00100000 {const}
+                   PipeIntroMusic  .eq     %00100000 {const}
+                   Select_Button   .eq     %00100000 {const}
+                   Sfx_Fireball    .eq     %00100000 {const}
+                   Sfx_PowerUpGrab .eq     %00100000 {const}
+                   Bowser          .eq     $2d    {const}
+                   PowerUpObject   .eq     $2e    {const}
+                   VineObject      .eq     $2f    {const}
+                   FlagpoleFlagObject .eq  $30    {const}
+                   StarFlagObject  .eq     $31    {const}
+                   JumpspringObject .eq    $32    {const}
+                   BulletBill_CannonVar .eq $33    {const}
+                   B_Button        .eq     %01000000 {const}
+                   Sfx_ExtraLife   .eq     %01000000 {const}
+                   StarPowerMusic  .eq     %01000000 {const}
+                   TimeRunningOutMusic .eq %01000000 {const}
+                   A_Button        .eq     %10000000 {const}
+                   Sfx_BowserFall  .eq     %10000000 {const}
+                   Sfx_SmallJump   .eq     %10000000 {const}
+                   Silence         .eq     %10000000 {const}
+                   TitleScreenDataOffset .eq $1ec0  {const}
+                   ObjectOffset    .eq     $08
+                   FrameCounter    .eq     $09
+                   A_B_Buttons     .eq     $0a
+                   Up_Down_Buttons .eq     $0b
+                   Left_Right_Buttons .eq  $0c
+                   PreviousA_B_Buttons .eq $0d
+                   GameEngineSubroutine .eq $0e
+                   Enemy_Flag      .eq     $0f    {addr/6}
+                   Enemy_ID        .eq     $16    {addr/6}
+                   Player_State    .eq     $1d
+                   Enemy_State     .eq     $1e    {addr/6}
+                   Fireball_State  .eq     $24
+                   Block_State     .eq     $26
+                   Misc_State      .eq     $2a
+                   PlayerFacingDir .eq     $33
+                   DestinationPageLoc .eq  $34                     ;2 defs for $34
+                   FirebarSpinDirection .eq $34
+                   VictoryWalkControl .eq  $35
+                   PowerUpType     .eq     $39
+                   FireballBouncingFlag .eq $3a
+                   HammerBroJumpTimer .eq  $3c
+                   Player_MovingDir .eq    $45
+                   Enemy_MovingDir .eq     $46
+                   Player_X_Speed  .eq     $57
+                   SprObject_X_Speed .eq   $57
+                   BlooperMoveSpeed .eq    $58                     ;11 defs for $58
+                   CheepCheepMoveMFlag .eq $58
+                   Enemy_X_Speed   .eq     $58
+                   ExplosionGfxCounter .eq $58
+                   FirebarSpinState_Low .eq $58
+                   Jumpspring_FixedYPos .eq $58
+                   LakituMoveSpeed .eq     $58
+                   PiranhaPlant_Y_Speed .eq $58
+                   RedPTroopaCenterYPos .eq $58
+                   XMoveSecondaryCounter .eq $58
+                   YPlatformCenterYPos .eq $58
+                   Fireball_X_Speed .eq    $5e
+                   Block_X_Speed   .eq     $60    {addr/3}
+                   Misc_X_Speed    .eq     $64
+                   Player_PageLoc  .eq     $6d                     ;2 defs for $6d
+                   SprObject_PageLoc .eq   $6d
+                   Enemy_PageLoc   .eq     $6e    {addr/6}
+                   Fireball_PageLoc .eq    $74
+                   Block_PageLoc   .eq     $76    {addr/3}
+                   Misc_PageLoc    .eq     $7a
+                   Bubble_PageLoc  .eq     $83
+                   Player_X_Position .eq   $86                     ;2 defs for $86
+                   SprObject_X_Position .eq $86
+                   Enemy_X_Position .eq    $87    {addr/6}
+                   Fireball_X_Position .eq $8d
+                   Block_X_Position .eq    $8f    {addr/3}
+                   Misc_X_Position .eq     $93
+                   Bubble_X_Position .eq   $9c
+                   Player_Y_Speed  .eq     $9f
+                   SprObject_Y_Speed .eq   $9f
+                   BlooperMoveCounter .eq  $a0                     ;7 defs for $a0
+                   Enemy_Y_Speed   .eq     $a0
+                   ExplosionTimerCounter .eq $a0
+                   FirebarSpinState_High .eq $a0
+                   LakituMoveDirection .eq $a0
+                   PiranhaPlant_MoveFlag .eq $a0
+                   XMovePrimaryCounter .eq $a0
+                   Fireball_Y_Speed .eq    $a6
+                   Block_Y_Speed   .eq     $a8    {addr/3}
+                   Misc_Y_Speed    .eq     $ac
+                   Player_Y_HighPos .eq    $b5                     ;2 defs for $b5
+                   SprObject_Y_HighPos .eq $b5
+                   Enemy_Y_HighPos .eq     $b6    {addr/6}
+                   Fireball_Y_HighPos .eq  $bc
+                   Block_Y_HighPos .eq     $be
+                   Misc_Y_HighPos  .eq     $c2
+                   Bubble_Y_HighPos .eq    $cb
+                   Player_Y_Position .eq   $ce                     ;2 defs for $ce
+                   SprObject_Y_Position .eq $ce
+                   Enemy_Y_Position .eq    $cf    {addr/6}
+                   Fireball_Y_Position .eq $d5
+                   Block_Y_Position .eq    $d7    {addr/3}
+                   Misc_Y_Position .eq     $db
+                   Bubble_Y_Position .eq   $e4
+                   AreaData        .eq     $e7    {addr/2}
+                   EnemyData       .eq     $e9    {addr/2}
+                   NoteLenLookupTblOfs .eq $f0
+                   Square1SoundBuffer .eq  $f1
+                   Square2SoundBuffer .eq  $f2
+                   NoiseSoundBuffer .eq    $f3
+                   AreaMusicBuffer .eq     $f4
+                   MusicData       .eq     $f5    {addr/2}
+                   MusicOffset_Square2 .eq $f7
+                   MusicOffset_Square1 .eq $f8
+                   MusicOffset_Triangle .eq $f9
+                   PauseSoundQueue .eq     $fa
+                   AreaMusicQueue  .eq     $fb
+                   EventMusicQueue .eq     $fc
+                   NoiseSoundQueue .eq     $fd
+                   Square2SoundQueue .eq   $fe
+                   Square1SoundQueue .eq   $ff
+                   VerticalFlipFlag .eq    $0109
+                   FlagpoleFNum_Y_Pos .eq  $010d
+                   FlagpoleFNum_YMFDummy .eq $010e
+                   FlagpoleScore   .eq     $010f
+                   FloateyNum_Control .eq  $0110
+                   FloateyNum_X_Pos .eq    $0117
+                   FloateyNum_Y_Pos .eq    $011e
+                   ShellChainCounter .eq   $0125
+                   FloateyNum_Timer .eq    $012c
+                   DigitModifier   .eq     $0134  {addr/6}
+                   Sprite_Data     .eq     $0200  {addr/32}
+                   Sprite_Y_Position .eq   $0200
+                   Sprite_Tilenumber .eq   $0201
+                   Sprite_Attributes .eq   $0202
+                   Sprite_X_Position .eq   $0203  {addr/5}
+                   VRAM_Buffer1_Offset .eq $0300
+                   VRAM_Buffer1    .eq     $0301  {addr/63}
+                   VRAM_Buffer2_Offset .eq $0340
+                   VRAM_Buffer2    .eq     $0341  {addr/63}
+                   BowserBodyControls .eq  $0363
+                   BowserFeetCounter .eq   $0364
+                   BowserMovementSpeed .eq $0365
+                   BowserOrigXPos  .eq     $0366
+                   BowserFlameTimerCtrl .eq $0367
+                   BowserFront_Offset .eq  $0368
+                   BridgeCollapseOffset .eq $0369
+                   BowserGfxFlag   .eq     $036a
+                   FirebarSpinSpeed .eq    $0388
+                   VineFlagOffset  .eq     $0398
+                   VineHeight      .eq     $0399
+                   VineObjOffset   .eq     $039a
+                   VineStart_Y_Position .eq $039d
+                   BalPlatformAlignment .eq $03a0
+                   Platform_X_Scroll .eq   $03a1
+                   HammerThrowingTimer .eq $03a2                   ;2 defs for $03a2
+                   PlatformCollisionFlag .eq $03a2
+                   Player_Rel_XPos .eq     $03ad                   ;2 defs for $03ad
+                   SprObject_Rel_XPos .eq  $03ad
+                   Enemy_Rel_XPos  .eq     $03ae
+                   Fireball_Rel_XPos .eq   $03af
+                   Bubble_Rel_XPos .eq     $03b0
+                   Block_Rel_XPos  .eq     $03b1
+                   Misc_Rel_XPos   .eq     $03b3
+                   Player_Rel_YPos .eq     $03b8                   ;2 defs for $03b8
+                   SprObject_Rel_YPos .eq  $03b8
+                   Enemy_Rel_YPos  .eq     $03b9
+                   Fireball_Rel_YPos .eq   $03ba
+                   Bubble_Rel_YPos .eq     $03bb
+                   Block_Rel_YPos  .eq     $03bc
+                   Misc_Rel_YPos   .eq     $03be
+                   Player_SprAttrib .eq    $03c4
+                   Enemy_SprAttrib .eq     $03c5  {addr/6}
+                   Player_OffscreenBits .eq $03d0                  ;2 defs for $03d0
+                   SprObject_OffscrBits .eq $03d0
+                   Enemy_OffscreenBits .eq $03d1
+                   FBall_OffscreenBits .eq $03d2
+                   Bubble_OffscreenBits .eq $03d3
+                   Block_OffscreenBits .eq $03d4
+                   Misc_OffscreenBits .eq  $03d6
+                   EnemyOffscrBitsMasked .eq $03d8
+                   Block_Orig_YPos .eq     $03e4
+                   Block_BBuf_Low  .eq     $03e6
+                   Block_Metatile  .eq     $03e8
+                   Block_PageLoc2  .eq     $03ea
+                   Block_RepFlag   .eq     $03ec
+                   SprDataOffset_Ctrl .eq  $03ee
+                   Block_ResidualCounter .eq $03f0
+                   Block_Orig_XPos .eq     $03f1
+                   AttributeBuffer .eq     $03f9
+                   SprObject_X_MoveForce .eq $0400
+                   Enemy_X_MoveForce .eq   $0401                   ;3 defs for $0401
+                   RedPTroopaOrigXPos .eq  $0401
+                   YPlatformTopYPos .eq    $0401
+                   Player_YMF_Dummy .eq    $0416
+                   SprObject_YMF_Dummy .eq $0416
+                   BowserFlamePRandomOfs .eq $0417                 ;3 defs for $0417
+                   Enemy_YMF_Dummy .eq     $0417
+                   PiranhaPlantUpYPos .eq  $0417
+                   Bubble_YMF_Dummy .eq    $042c
+                   Player_Y_MoveForce .eq  $0433
+                   SprObject_Y_MoveForce .eq $0433
+                   CheepCheepOrigYPos .eq  $0434                   ;3 defs for $434
+                   Enemy_Y_MoveForce .eq   $0434
+                   PiranhaPlantDownYPos .eq $0434
+                   Block_Y_MoveForce .eq   $043c  {addr/3}
+                   MaximumLeftSpeed .eq    $0450
+                   MaximumRightSpeed .eq   $0456
+                   Cannon_Offset   .eq     $046a
+                   Whirlpool_Offset .eq    $046a
+                   Cannon_PageLoc  .eq     $046b                   ;2 defs for $046b
+                   Whirlpool_PageLoc .eq   $046b
+                   Cannon_X_Position .eq   $0471                   ;2 defs for $0471
+                   Whirlpool_LeftExtent .eq $0471
+                   Cannon_Y_Position .eq   $0477                   ;2 defs for $0477
+                   Whirlpool_Length .eq    $0477
+                   Cannon_Timer    .eq     $047d                   ;2 defs for $047d
+                   Whirlpool_Flag  .eq     $047d
+                   BowserHitPoints .eq     $0483
+                   StompChainCounter .eq   $0484
+                   Player_CollisionBits .eq $0490
+                   Enemy_CollisionBits .eq $0491
+                   Player_BoundBoxCtrl .eq $0499                   ;2 defs for $0499
+                   SprObj_BoundBoxCtrl .eq $0499
+                   Enemy_BoundBoxCtrl .eq  $049a  {addr/6}
+                   Fireball_BoundBoxCtrl .eq $04a0
+                   Misc_BoundBoxCtrl .eq   $04a2
+                   BoundingBox_UL_XPos .eq $04ac
+                   BoundingBox_UL_YPos .eq $04ad
+                   BoundingBox_DR_XPos .eq $04ae
+                   BoundingBox_DR_YPos .eq $04af
+                   EnemyBoundingBoxCoord .eq $04b0  {addr/4}
+                   Block_Buffer_1  .eq     $0500
+                   Block_Buffer_2  .eq     $05d0
+                   BlockBufferColumnPos .eq $06a0
+                   MetatileBuffer  .eq     $06a1  {addr/11}
+                   HammerEnemyOffset .eq   $06ae
+                   JumpCoinMiscOffset .eq  $06b7
+                   BrickCoinTimerFlag .eq  $06bc
+                   Misc_Collision_Flag .eq $06be
+                   unused_06c9     .eq     $06c9
+                   EnemyFrenzyBuffer .eq   $06cb
+                   SecondaryHardMode .eq   $06cc
+                   EnemyFrenzyQueue .eq    $06cd
+                   FireballCounter .eq     $06ce
+                   DuplicateObj_Offset .eq $06cf
+                   LakituReappearTimer .eq $06d1
+                   NumberofGroupEnemies .eq $06d3
+                   ColorRotateOffset .eq   $06d4
+                   PlayerGfxOffset .eq     $06d5
+                   WarpZoneControl .eq     $06d6
+                   FireworksCounter .eq    $06d7
+                   MultiLoopCorrectCntr .eq $06d9
+                   MultiLoopPassCntr .eq   $06da
+                   JumpspringForce .eq     $06db
+                   MaxRangeFromOrigin .eq  $06dc
+                   BitMFilter      .eq     $06dd
+                   ChangeAreaTimer .eq     $06de
+                   SprShuffleAmtOffset .eq $06e0
+                   SprShuffleAmt   .eq     $06e1  {addr/3}
+                   SprDataOffset   .eq     $06e4  {addr/15}
+                   Enemy_SprDataOffset .eq $06e5
+                   Alt_SprDataOffset .eq   $06ec                   ;2 defs for $06ec
+                   Block_SprDataOffset .eq $06ec
+                   Bubble_SprDataOffset .eq $06ee
+                   FBall_SprDataOffset .eq $06f1
+                   Misc_SprDataOffset .eq  $06f3
+                   SavedJoypad1Bits .eq    $06fc
+                   SavedJoypad2Bits .eq    $06fd
+                   Player_X_Scroll .eq     $06ff
+                   Player_XSpeedAbsolute .eq $0700
+                   FrictionAdderHigh .eq   $0701
+                   FrictionAdderLow .eq    $0702
+                   RunningSpeed    .eq     $0703
+                   SwimmingFlag    .eq     $0704
+                   Player_X_MoveForce .eq  $0705
+                   DiffToHaltJump  .eq     $0706
+                   JumpOrigin_Y_HighPos .eq $0707
+                   JumpOrigin_Y_Position .eq $0708
+                   VerticalForce   .eq     $0709
+                   VerticalForceDown .eq   $070a
+                   PlayerChangeSizeFlag .eq $070b
+                   PlayerAnimTimerSet .eq  $070c
+                   PlayerAnimCtrl  .eq     $070d
+                   JumpspringAnimCtrl .eq  $070e
+                   FlagpoleCollisionYPos .eq $070f
+                   PlayerEntranceCtrl .eq  $0710
+                   FireballThrowingTimer .eq $0711
+                   DeathMusicLoaded .eq    $0712
+                   FlagpoleSoundQueue .eq  $0713
+                   CrouchingFlag   .eq     $0714
+                   GameTimerSetting .eq    $0715
+                   DisableCollisionDet .eq $0716
+                   DemoAction      .eq     $0717
+                   DemoActionTimer .eq     $0718
+                   PrimaryMsgCounter .eq   $0719
+                   ScreenLeft_PageLoc .eq  $071a
+                   ScreenRight_PageLoc .eq $071b
+                   ScreenLeft_X_Pos .eq    $071c
+                   ScreenRight_X_Pos .eq   $071d
+                   ColumnSets      .eq     $071e
+                   AreaParserTaskNum .eq   $071f
+                   CurrentNTAddr_High .eq  $0720
+                   CurrentNTAddr_Low .eq   $0721
+                   Sprite0HitDetectFlag .eq $0722
+                   ScrollLock      .eq     $0723
+                   CurrentPageLoc  .eq     $0725
+                   CurrentColumnPos .eq    $0726
+                   TerrainControl  .eq     $0727
+                   BackloadingFlag .eq     $0728
+                   BehindAreaParserFlag .eq $0729
+                   AreaObjectPageLoc .eq   $072a
+                   AreaObjectPageSel .eq   $072b
+                   AreaDataOffset  .eq     $072c
+                   AreaObjOffsetBuffer .eq $072d
+                   AreaObjectLength .eq    $0730  {addr/3}
+                   AreaStyle       .eq     $0733
+                   StaircaseControl .eq    $0734
+                   AreaObjectHeight .eq    $0735
+                   MushroomLedgeHalfLen .eq $0736
+                   EnemyDataOffset .eq     $0739
+                   EnemyObjectPageLoc .eq  $073a
+                   EnemyObjectPageSel .eq  $073b
+                   ScreenRoutineTask .eq   $073c
+                   ScrollThirtyTwo .eq     $073d
+                   HorizontalScroll .eq    $073f
+                   VerticalScroll  .eq     $0740
+                   ForegroundScenery .eq   $0741
+                   BackgroundScenery .eq   $0742
+                   CloudTypeOverride .eq   $0743
+                   BackgroundColorCtrl .eq $0744
+                   LoopCommand     .eq     $0745
+                   StarFlagTaskControl .eq $0746
+                   TimerControl    .eq     $0747
+                   CoinTallyFor1Ups .eq    $0748
+                   SecondaryMsgCounter .eq $0749
+                   JoypadBitMask   .eq     $074a
+                   AreaType        .eq     $074e
+                   AreaAddrsLOffset .eq    $074f
+                   AreaPointer     .eq     $0750
+                   EntrancePage    .eq     $0751
+                   AltEntranceControl .eq  $0752
+                   CurrentPlayer   .eq     $0753
+                   PlayerSize      .eq     $0754
+                   Player_Pos_ForScroll .eq $0755
+                   PlayerStatus    .eq     $0756
+                   FetchNewGameTimerFlag .eq $0757
+                   JoypadOverride  .eq     $0758
+                   GameTimerExpiredFlag .eq $0759
+                   OnscreenPlayerInfo .eq  $075a  {addr/7}
+                   NumberOfLives   .eq     $075a                   ;used by current player
+                   HalfwayPage     .eq     $075b
+                   LevelNumber     .eq     $075c                   ;the actual dash number
+                   Hidden1UpFlag   .eq     $075d
+                   CoinTally       .eq     $075e
+                   WorldNumber     .eq     $075f
+                   AreaNumber      .eq     $0760                   ;internal number used to find areas
+                   OffscreenPlayerInfo .eq $0761  {addr/7}
+                   OffScr_NumberofLives .eq $0761                  ;used by offscreen player
+                   OffScr_Hidden1UpFlag .eq $0764
+                   OffScr_WorldNumber .eq  $0766
+                   OffScr_AreaNumber .eq   $0767
+                   ScrollFractional .eq    $0768
+                   DisableIntermediate .eq $0769
+                   PrimaryHardMode .eq     $076a
+                   WorldSelectNumber .eq   $076b
+                   OperMode        .eq     $0770
+                   OperMode_Task   .eq     $0772
+                   VRAM_Buffer_AddrCtrl .eq $0773
+                   DisableScreenFlag .eq   $0774
+                   ScrollAmount    .eq     $0775
+                   GamePauseStatus .eq     $0776
+                   GamePauseTimer  .eq     $0777
+                   Mirror_PPU_CTRL_REG1 .eq $0778
+                   Mirror_PPU_CTRL_REG2 .eq $0779
+                   NumberOfPlayers .eq     $077a
+                   IntervalTimerControl .eq $077f
+                   Timers          .eq     $0780  {addr/36}
+                   SelectTimer     .eq     $0780
+                   PlayerAnimTimer .eq     $0781
+                   JumpSwimTimer   .eq     $0782
+                   RunningTimer    .eq     $0783
+                   BlockBounceTimer .eq    $0784
+                   SideCollisionTimer .eq  $0785
+                   JumpspringTimer .eq     $0786
+                   GameTimerCtrlTimer .eq  $0787
+                   ClimbSlideTimer .eq     $0789
+                   EnemyFrameTimer .eq     $078a
+                   FrenzyEnemyTimer .eq    $078f
+                   BowserFireBreathTimer .eq $0790
+                   StompTimer      .eq     $0791
+                   AirBubbleTimer  .eq     $0792
+                   ScrollIntervalTimer .eq $0795
+                   EnemyIntervalTimer .eq  $0796
+                   BrickCoinTimer  .eq     $079d
+                   InjuryTimer     .eq     $079e
+                   StarInvincibleTimer .eq $079f
+                   ScreenTimer     .eq     $07a0
+                   WorldEndTimer   .eq     $07a1
+                   DemoTimer       .eq     $07a2
+                   PseudoRandomBitReg .eq  $07a7  {addr/3}
+                   SoundMemory     .eq     $07b0  {addr/32}
+                   MusicOffset_Noise .eq   $07b0
+                   EventMusicBuffer .eq    $07b1
+                   PauseSoundBuffer .eq    $07b2
+                   Squ2_NoteLenBuffer .eq  $07b3
+                   Squ2_NoteLenCounter .eq $07b4
+                   Squ2_EnvelopeDataCtrl .eq $07b5
+                   Squ1_NoteLenCounter .eq $07b6
+                   Squ1_EnvelopeDataCtrl .eq $07b7
+                   Tri_NoteLenBuffer .eq   $07b8
+                   Tri_NoteLenCounter .eq  $07b9
+                   Noise_BeatLenCounter .eq $07ba
+                   Squ1_SfxLenCounter .eq  $07bb
+                   Squ2_SfxLenCounter .eq  $07bd
+                   Sfx_SecondaryCounter .eq $07be
+                   Noise_SfxLenCounter .eq $07bf
+                   DAC_Counter     .eq     $07c0
+                   NoiseDataLoopbackOfs .eq $07c1
+                   NoteLengthTblAdder .eq  $07c4
+                   AreaMusicBuffer_Alt .eq $07c5
+                   PauseModeFlag   .eq     $07c6
+                   GroundMusicHeaderOfs .eq $07c7
+                   AltRegContentFlag .eq   $07ca
+                   WarmBootOffset  .eq     $07d6
+                   TopScoreDisplay .eq     $07d7  {addr/6}
+                   ScoreAndCoinDisplay .eq $07dd
+                   GameTimerDisplay .eq    $07f8  {addr/3}
+                   WorldSelectEnableFlag .eq $07fc
+                   ContinueWorld   .eq     $07fd
+                   ColdBootOffset  .eq     $07fe
+                   WarmBootValidation .eq  $07ff
+                   PPUCTRL         .eq     $2000                   ;W VPHB SINN  various
+                   PPUMASK         .eq     $2001                   ;W BGRs bMmG  various
+                   PPUSTATUS       .eq     $2002                   ;R VSO- ----  various; read resets $2005/2006
+                   OAMADDR         .eq     $2003                   ;W OAM read/write address
+                   PPUSCROLL       .eq     $2005                   ;WW fine scroll position (two writes: X,Y)
+                   PPUADDR         .eq     $2006                   ;WW PPU read/write address (two writes: MSB, LSB)
+                   PPUDATA         .eq     $2007                   ;RW PPU data read/write
+                   SQ1_VOL         .eq     $4000                   ;DDLC VVVV
+                   SQ1_SWEEP       .eq     $4001                   ;EPPP NSSS
+                   SQ1_LO          .eq     $4002                   ;TTTT TTTT
+                   SQ1_HI          .eq     $4003                   ;LLLL LTTT
+                   SQ2_VOL         .eq     $4004                   ;DDLC VVVV
+                   SQ2_SWEEP       .eq     $4005                   ;EPPP NSSS
+                   SQ2_LO          .eq     $4006                   ;TTTT TTTT
+                   TRI_LINEAR      .eq     $4008                   ;CRRR RRRR
+                   NOISE_VOL       .eq     $400c                   ;--LC VVVV
+                   NOISE_LO        .eq     $400e                   ;L--- PPPP
+                   NOISE_HI        .eq     $400f                   ;LLLL L---
+                   DMC_RAW         .eq     $4011                   ;-DDD DDDD
+                   OAMDMA          .eq     $4014                   ;AAAA AAAA  OAM DMA high address
+                   SND_CHN         .eq     $4015                   ;W:---D NT21 R:IF-D NT21
+                   JOY1            .eq     $4016                   ;joystick 1 data (R) and joystick strobe (W)
+                   JOY2            .eq     $4017                   ;joystick 2 data (R) and frame counter (W)

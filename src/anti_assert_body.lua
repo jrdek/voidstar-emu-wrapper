@@ -61,16 +61,18 @@ local function typed_index_or_nil(tbl, key, typing)
 end
 
 local function typed_index_or_err(tbl, key, typing)
-    -- NOTE: this will straight up break if tbl is not a table
-    return assert(
-        typed_index_or_nil(tbl, key, typing),
-        string.format(
-            "Value for key `%s` is `%s` (doesn't match `%s`)",
-            key,
-            tostring(tbl[key]),
-            tostring(typing)
-        )
-    )
+    local result = typed_index_or_nil(tbl, key, typing);
+    if result == nil then
+        error(
+            string.format(
+                "Value for key `%s` is `%s` (doesn't match `%s`)",
+                key,
+                tostring(tbl[key]),
+                tostring(typing)
+            )
+        );
+    end
+    return result;
 end
 
 

@@ -1,0 +1,16 @@
+                   ; 
+                   ; iNES file header, for use by emulators.
+                   ; (See https://wiki.nesdev.com/w/index.php/INES )
+                   ; 
+                                   .addrs  NA
+0000: 4e 45 53                     .str    ‘NES’
+0003: 1a                           .dd1    $1a                     ;Ctrl+Z
+0004: 02                           .dd1    $02                     ;PRG ROM is 2 x 16KB
+0005: 01                           .dd1    $01                     ;CHR ROM is 1 x 8KB
+0006: 01                           .dd1    %00000001               ;flags 6
+0007: 00                           .dd1    %00000000               ;flags 7
+0008: 00                           .dd1    %00000000               ;flags 8
+0009: 00                           .dd1    %00000000               ;flags 9
+000a: 00                           .dd1    %00000000               ;flags 10
+000b: 00 00 00 00+                 .bulk   $00,$00,$00,$00,$00     ;padding
+                                   .adrend ↑ NA

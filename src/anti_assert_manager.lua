@@ -4,8 +4,6 @@ This file defines the class `AssertionManager`.
 
 
 local build_assertion = require "src.anti_assert_builders";
-local all_targets = require "src.anti_target";
-
 
 
 --[[
@@ -23,7 +21,7 @@ function AssertionManager:new(target, emitter)
     new_instance.inventory = {};
     new_instance.emitter = emitter;
 
-    new_instance.target_utils = all_targets[target];
+    new_instance.target_utils = require( ("src.target.%s"):format(target) );
 
     return new_instance;
 end
@@ -43,8 +41,8 @@ function AssertionManager:catalog(assert_obj)
             assert_obj.body.location.file,
             assert_obj.body.location.begin_line,
             self.inventory[assertion_id].body.assert_type,
-            self.inventory[assertion_id].body.file,
-            self.inventory[assertion_id].body.location.begin_line
+            self.inventory[assertion_id].body.file or "undefined",
+            self.inventory[assertion_id].body.location.begin_line or "undefined"
         ));
     end
     debug_print(string.format(
