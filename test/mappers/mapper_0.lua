@@ -50,17 +50,24 @@ local function build_targaddr_json(lo, hi)
     return {jump_target = addr_string};
 end
 
+-- TODO: Reorganize this.
+-- "Mapper 0 utils" aren't dependent on the ROM. I'm just doing it 
+-- this way to skip reiterating through all the chunks.
+-- A better approach would be to make the disassembly-parser label 
+-- indirect jumps along the way.
+mapper_0_utils.code_chunks = nil;
+
+local function points_to_code(targaddr_lo, targaddr_hi)
+    assert(mapper_0_utils.code_chunks, "points_to_code() needs a map of code chunks!")
+    local targaddr = targaddr_lo + (0x100 * targaddr_hi);
+    return mapper_0_utils.code_chunks[targaddr] ~= nil;
+end
 
 function mapper_0_utils.assert_jumps_are_safe(disas_path)
     local all_chunks =
         (require "src.disas.6502_sourcegen")
         .get_region_starts(disas_path);
     local code_chunks = {};
-
-    local function points_to_code(targaddr_lo, targaddr_hi)
-        local targaddr = targaddr_lo + (0x100 * targaddr_hi);
-        return code_chunks[targaddr] ~= nil;
-    end
 
     local addr = BOUNDS.lo;
     while addr < BOUNDS.hi do
@@ -101,6 +108,10 @@ function mapper_0_utils.assert_jumps_are_safe(disas_path)
             end
         end
         addr = addr + chunk.num_bytes;
+    end
+    -- TODO: Reorganize this. (see the TODO near where this field is defined)
+    if mapper_0_utils.code_chunks == nil then
+        mapper_0_utils.code_chunks = code_chunks;
     end
 end
 

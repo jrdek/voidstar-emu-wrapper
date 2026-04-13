@@ -36,7 +36,15 @@ end
 local REPO_ROOT --[[<const>]] = (require "src.utils.paths").path_to_repo_root();
 local DISAS_PATH --[[<const>]] = REPO_ROOT .. "/reference/mario_disas/main_program.txt";
 
-(require "test.mappers.mapper_0").assert_jumps_are_safe(DISAS_PATH);
+local mapper0_utils = require "test.mappers.mapper_0"
+mapper0_utils.assert_jumps_are_safe(DISAS_PATH);
+for addr,_ in pairs(mapper0_utils.code_chunks) do
+    Snouty.assert.reachable({
+        location = {address = addr},
+        description = ("inst @ $%04x is reachable"):format(addr),
+        get_details = function() return {ppuframe = Snouty.target.get_frame_count()}; end
+    });
+end
 
 -- now GOOOOO
 local movie_name = "happylee-supermariobros,warped.fm2";
@@ -45,8 +53,6 @@ local MOVIES_DIR = REPO_ROOT .. "/reference/movies/";
 local getter_args = {movie = {path = MOVIES_DIR .. movie_name, format = "fm2"}};
 
 Snouty.setup_input_getter(getter_args);
-
-print("Here we go!")
 
 
 -- Snouty.go()  -- if with FCEUX
