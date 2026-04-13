@@ -35,5 +35,6 @@ ANTITHESIS_OUTPUT_DIR="$ANTITHESIS_OUTPUT_DIR" \
 exec \
 "$MESEN_BINARY" \
     -enablestdout \
+    --testrunner \
     "$SCRIPT_PATH" \
     "$ROM_PATH"

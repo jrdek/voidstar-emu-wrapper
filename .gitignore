@@ -1,5 +1,5 @@
 ### reference material
-reference/*/
+reference/*
 !reference/mario_disas
 
 ### various places per-run output might go

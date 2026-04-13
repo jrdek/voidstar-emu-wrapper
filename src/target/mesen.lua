@@ -121,8 +121,6 @@ end
 
 function targMesen.soft_reset()
     emu.reset();
-    emu.breakExecution();
-
 end
 
 function targMesen.get_frame_count()

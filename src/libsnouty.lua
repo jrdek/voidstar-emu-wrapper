@@ -46,7 +46,8 @@ function Snouty.do_frame()
     -- debug_print(("Frame: %d"):format(Snouty.target.get_frame_count()))
     -- debug_print("[snouty][do_frame] Getting inputs...")
     local all_inputs = Snouty.input_getter:get_next();
-    if all_inputs == "softreset" then
+    if all_inputs == nil then emu.stop();  -- FIXME Mesen-specific
+    elseif all_inputs == "softreset" then
         -- debug_print("[snouty][do_frame] Soft resetting...")
         Snouty.target.soft_reset();
     else
