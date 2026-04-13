@@ -1,14 +1,8 @@
 
 
--- courtesy of https://stackoverflow.com/questions/6380820/get-containing-path-of-lua-file
-local function scriptdir_path()
-   local str = debug.getinfo(2, "S").source:sub(2)
-   return str:match("(.*/)") or "."
-end
-
 local sourcegen_parser = require "src.disas.6502_sourcegen";
 
-local DISAS_FOLDER_PATH --[[<const>]] = scriptdir_path() .. "../../../reference/mario_disas/";
+local DISAS_FOLDER_PATH --[[<const>]] = (require "src.utils.paths").path_to_repo_root() .. "/reference/mario_disas/";
 
 addrs = sourcegen_parser.get_region_starts(DISAS_FOLDER_PATH .. "main_program.txt");
 

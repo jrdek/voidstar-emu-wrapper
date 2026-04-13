@@ -30,14 +30,23 @@ local function parse_line(line)
     parsed_data.addr = tonumber(addr_string, 16);
 
     -- there must be one byte; there may be more
-    local last_m_end;
+    local bytes_start, last_m_end;
     repeat
         last_m_end = m_end;
         m_start, m_end = line:find("^%s%x%x", m_end+1);
+        if bytes_start == nil then bytes_start = m_start+1 end;
     until (not m_start) or (m_start > m_end);
     m_end = last_m_end;
+    -- parse out the bytes from the bytes-string
+    -- n.b. this is probably suboptimal, but it's short so it's fine
+    local bytes_str = line:sub(bytes_start, m_end);
+    parsed_data.bytes = {};
+    for byte in bytes_str:gmatch("%x%x") do
+        table.insert(parsed_data.bytes, tonumber(byte, 16));
+    end
+
     m_start, m_end = line:find("^+?%s+", m_end+1); if (not m_start) or (m_start > m_end) then return nil; end;
-    
+
     -- there may be a label
     last_m_end = m_end;
     m_start, m_end, parsed_data.label = line:find("^(%u%g*)%s+", m_end+1);
@@ -79,7 +88,7 @@ function module.get_region_starts(path)
         line = insts_file:read("*l");
     end;
     regions[last_addr].num_bytes = 0x10000 - last_addr;
-    print(("Found %d regions."):format(cnt));
+    debug_print(("[6502_sourcegen] Found %d regions."):format(cnt));
     return regions;
 end
 

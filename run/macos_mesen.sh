@@ -9,7 +9,7 @@ cd "$LIBSNOUTY_PATH";
 ROM_NAME="mario.nes";
 
 # SCRIPT_NAME="test_mario.lua";
-SCRIPT_NAME="mario_reachability.lua";
+SCRIPT_NAME="mesen/mario_reachability.lua";
 # SCRIPT_NAME="mario/fake_warmboot.lua";
 
 SCRIPT_PATH="$LIBSNOUTY_PATH/test/$SCRIPT_NAME";

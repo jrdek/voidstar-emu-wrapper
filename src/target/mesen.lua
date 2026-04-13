@@ -7,6 +7,9 @@ local targMesen = {
 };
 
 
+function targMesen.get_reg(regname)
+    return emu.getState()["cpu." .. regname:lower()];
+end
 
 function targMesen.get_byte_at_cpu_addr(addr)
     return emu.read(
