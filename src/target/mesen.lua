@@ -6,9 +6,8 @@ local targMesen = {
     event_callbacks = {}
 };
 
-
 function targMesen.get_reg(regname)
-    return emu.getState()["cpu." .. regname:lower()];
+    return emu.getNesData(regname)
 end
 
 function targMesen.get_byte_at_cpu_addr(addr)
@@ -18,6 +17,8 @@ function targMesen.get_byte_at_cpu_addr(addr)
         false  -- (not signed)
     )
 end
+
+targMesen._assertion_count = 0;
 
 function targMesen.register_exec(id, loc, onhit)
     local onhit_t = type(onhit);
@@ -37,6 +38,7 @@ function targMesen.register_exec(id, loc, onhit)
     -- , emu.memType.nesDebug  -- memoryType: we'll use nesDebug to avoid accidental clobbers
     );
     targMesen.assertion_handlers.execute[id] = callback_id;
+    targMesen._assertion_count = targMesen._assertion_count + 1;
 end
 
 function targMesen.deregister_exec(id, loc)
@@ -56,6 +58,7 @@ function targMesen.deregister_exec(id, loc)
     -- , emu.cpuType.nes
     -- , emu.memType.nesDebug
     );
+    targMesen._assertion_count = targMesen._assertion_count - 1;
 end
 
 -- n.b.: this is actually bound to the *system*, not the *emulator*
@@ -124,9 +127,13 @@ function targMesen.soft_reset()
 end
 
 function targMesen.get_frame_count()
-    return emu.getState()["ppu.frameCount"];
+    return emu.getNesData("ppuFrame");
     -- NOTE:/CHECKME: ppu.frameCount almost certainly isn't the
     -- number of VBlanks for which the PC has jumped to NMI!
+end
+
+function targMesen.get_cpu_cycle_count()
+    return emu.getNesData("cpuCycle");
 end
 
 local DO_NOTHING = function () end;

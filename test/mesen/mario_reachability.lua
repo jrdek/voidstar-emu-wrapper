@@ -1,5 +1,6 @@
 require "src.libsnouty";
-debug_print.enable();
+-- debug_print.enable();
+debug_print.disable();
 
 
 --[[ Important addresses ]]--
@@ -12,7 +13,7 @@ local helpers = (require "test.games.smb1.helpers");
 local function get_emu_metadata()
     return {
         frame = Snouty.target.get_frame_count(),
-        -- cycle = Snouty.target.get_cycle_count()
+        cycle = Snouty.target.get_cpu_cycle_count()
     }
 end
 
@@ -42,18 +43,21 @@ for addr,_ in pairs(mapper0_utils.code_chunks) do
     Snouty.assert.reachable({
         location = {address = addr},
         description = ("inst @ $%04x is reachable"):format(addr),
-        get_details = function() return {ppuframe = Snouty.target.get_frame_count()}; end
+        get_details = get_emu_metadata
     });
 end
 
 -- now GOOOOO
-local movie_name = "happylee-supermariobros,warped.fm2";
+local movie_name =
+    "000000_points.fm2";
+    -- "happylee-supermariobros,warped.fm2";
 
 local MOVIES_DIR = REPO_ROOT .. "/reference/movies/";
 local getter_args = {movie = {path = MOVIES_DIR .. movie_name, format = "fm2"}};
 
 Snouty.setup_input_getter(getter_args);
 
+--print( ("[snouty] Starting (%d assertions)"):format(Snouty.target._assertion_count) );
 
 -- Snouty.go()  -- if with FCEUX
 Snouty.target.init_emulator();  -- if with Mesen

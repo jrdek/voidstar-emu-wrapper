@@ -46,7 +46,13 @@ function Snouty.do_frame()
     -- debug_print(("Frame: %d"):format(Snouty.target.get_frame_count()))
     -- debug_print("[snouty][do_frame] Getting inputs...")
     local all_inputs = Snouty.input_getter:get_next();
-    if all_inputs == nil then emu.stop();  -- FIXME Mesen-specific
+    if all_inputs == nil then
+        debug_print( ("No more inputs! Stopping.") )
+        debug_print( ("\tCurrent frame: %d"):format(Snouty.target.get_frame_count()) )
+        debug_print( ("\tCurrent CPU cycle: %d"):format(Snouty.target.get_cpu_cycle_count()) )
+        -- print( ("[snouty] Stopping (%d assertions still unresolved)"):format(Snouty.target._assertion_count) );
+        emu.stop();  -- FIXME Mesen-specific
+        --while true do end;
     elseif all_inputs == "softreset" then
         -- debug_print("[snouty][do_frame] Soft resetting...")
         Snouty.target.soft_reset();

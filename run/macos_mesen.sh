@@ -8,9 +8,7 @@ cd "$LIBSNOUTY_PATH";
 ###== TEST CONFIG ==###
 ROM_NAME="mario.nes";
 
-# SCRIPT_NAME="test_mario.lua";
 SCRIPT_NAME="mesen/mario_reachability.lua";
-# SCRIPT_NAME="mario/fake_warmboot.lua";
 
 SCRIPT_PATH="$LIBSNOUTY_PATH/test/$SCRIPT_NAME";
 
@@ -36,5 +34,6 @@ exec \
 "$MESEN_BINARY" \
     -enablestdout \
     --testrunner \
+    -timeout=3600 \
     "$SCRIPT_PATH" \
     "$ROM_PATH"
