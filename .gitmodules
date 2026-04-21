@@ -1,0 +1,4 @@
+[submodule "Mesen2"]
+	path = Mesen2
+	url = https://github.com/jrdek/Mesen2
+	branch = jrdek-perf
