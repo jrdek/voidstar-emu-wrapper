@@ -1,6 +1,4 @@
 
--- emu.pause();
-
 local addr_of = {
     routine = {
         RESET = 0x8000,
@@ -35,10 +33,12 @@ local function set_continue_world(world_number)
 end
 
 
-emu.pause();
 
 set_warm_boot();
 
-set_continue_world(9);--0xf + 8);-- <= "world N"
+set_continue_world(0xf + 8);-- <= "world N"
 
 emu.unpause();
+emu.poweron();
+emu.pause();
+

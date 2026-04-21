@@ -83,10 +83,13 @@ end
 
 -- this is a hot mess. hopefully fixable. TODO
 function targMesen.init_emulator()
+    targMesen._can_resume = true;
     emu.addEventCallback(
         function ()
             Snouty.do_frame();
-            emu.resume();
+            if targMesen._can_resume then
+                emu.resume();
+            end
         end,
         emu.eventType.codeBreak
     );
@@ -127,13 +130,18 @@ function targMesen.soft_reset()
 end
 
 function targMesen.get_frame_count()
-    return emu.getNesData("ppuFrame");
-    -- NOTE:/CHECKME: ppu.frameCount almost certainly isn't the
-    -- number of VBlanks for which the PC has jumped to NMI!
+    if emu.getNesData then
+        return emu.getNesData("ppuFrame");
+    else
+        return emu.getState()["ppuFrame"];  -- <-- incredibly slow!
+    end
 end
 
 function targMesen.get_cpu_cycle_count()
-    return emu.getNesData("cpuCycle");
+    if emu.getNesData then
+        return emu.getNesData("cpuCycle");
+    else
+        return emu.getState()["cpuCycle"];  -- <-- incredibly slow!
 end
 
 local DO_NOTHING = function () end;

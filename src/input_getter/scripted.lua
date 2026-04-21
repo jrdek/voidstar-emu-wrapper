@@ -26,6 +26,7 @@ function ScriptedInputGetter:new(args)
     local movie_handle = assert(io.open(args.movie.path, "r"), string.format("Couldn't open file %s", args.movie.path));
     
     new_getter.movie_lib = movie_lib;
+    new_getter.movie_path = args.movie.path;
     new_getter.movie_handle = movie_handle;
 
     assert(new_getter:init_movie(), string.format("Couldn't get inputs from file %s", args.movie.path));
@@ -49,6 +50,14 @@ function ScriptedInputGetter:get_next()
     -- debug_print(string.format("[snouty][movie] Got line: %s", inputs_line));
     if inputs_line == nil then return nil end;
     return self.movie_lib.parse_line(inputs_line);
+end
+
+function ScriptedInputGetter:skip_to_line(n)
+    self.initial_cursor_pos = 0;
+    self:init_movie();
+    for _ = 1, n do
+        self:get_next();
+    end
 end
 
 

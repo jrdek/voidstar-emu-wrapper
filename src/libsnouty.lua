@@ -23,7 +23,7 @@ Snouty._utils.build_setup_complete_msg = (require "src.anti_milestones").build_s
 
 
 Snouty.target_name =  -- TODO: make this specifiable elsewhere
-    "Mesen";
+    "mesen";
     --"FCEUX";
 Snouty.target = require( ("src.target.%s"):format(Snouty.target_name) );
 Snouty._assertion_manager = AssertionManager:new(Snouty.target_name, Snouty._emitter);
@@ -37,15 +37,31 @@ function Snouty.setup_input_getter(args)
     debug_print("[snouty] Input getter set up!");
 end
 
--- TODO: this should live elsewhere
-local FM2_BUTTON_ORDER --[[<const>]] = {"right", "left", "down", "up", "start", "select", "A", "B"}
+
+local FRAME_TO_INSPECT = math.maxinteger;
+local INSPECT_DELAY_SECS_STR = "1";
+
+function Snouty.configure(cfg)
+    if type(cfg) ~= "table" then return; end
+    if type(cfg.slow_down) == "table" then
+        FRAME_TO_INSPECT = cfg.slow_down.at_frame;
+        INSPECT_DELAY_SECS_STR = cfg.slow_down.delay_secs;
+    end
+end
+
+
+--inputline = 1;
 
 function Snouty.do_frame()
     -- get input for the next frame
     -- (TODO: also handle non-movie execution)
-    -- debug_print(("Frame: %d"):format(Snouty.target.get_frame_count()))
+    -- print(("Input line: %d"):format(inputline));
+    -- if inputline > FRAME_TO_INSPECT then
+    --     os.execute("sleep " .. INSPECT_DELAY_SECS_STR)
+    -- end
     -- debug_print("[snouty][do_frame] Getting inputs...")
     local all_inputs = Snouty.input_getter:get_next();
+    --inputline = inputline + 1;
     if all_inputs == nil then
         debug_print( ("No more inputs! Stopping.") )
         debug_print( ("\tCurrent frame: %d"):format(Snouty.target.get_frame_count()) )

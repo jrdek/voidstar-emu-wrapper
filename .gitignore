@@ -1,6 +1,10 @@
 ### reference material
 reference/*
 !reference/mario_disas
+!reference/movies
+reference/movies/*
+!reference/movies/world_n_ace__jrdek.fmi
+
 
 ### various places per-run output might go
 output/

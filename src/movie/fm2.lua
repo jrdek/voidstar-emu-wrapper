@@ -33,6 +33,8 @@ end
 function fm2_lib.parse_line(inputs_line)
     local line_components = {};
     for segment in inputs_line:gmatch("|([^|]*)") do
+        -- a `segment` is the stuff after a pipe, but before the next pipe
+        -- note that this includes anything after the last pipe
         table.insert(line_components, segment)
     end;
 

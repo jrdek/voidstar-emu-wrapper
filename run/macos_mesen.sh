@@ -8,7 +8,7 @@ cd "$LIBSNOUTY_PATH";
 ###== TEST CONFIG ==###
 ROM_NAME="mario.nes";
 
-SCRIPT_NAME="mesen/mario_reachability.lua";
+SCRIPT_NAME="mesen/world_n_start.lua";
 
 SCRIPT_PATH="$LIBSNOUTY_PATH/test/$SCRIPT_NAME";
 

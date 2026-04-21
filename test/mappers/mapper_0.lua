@@ -44,10 +44,15 @@ local function get_indjmp_targaddr_lohi(oper_lo, oper_hi)
     local hi = Snouty.target.get_byte_at_cpu_addr(addr_of_hi);
     return lo, hi
 end
+mapper_0_utils.get_indjmp_targaddr_lohi = get_indjmp_targaddr_lohi;
 
 local function build_targaddr_json(lo, hi)
     local addr_string = ("$%02x%02x"):format(hi, lo);
-    return {jump_target = addr_string};
+    return {
+        jump_target = addr_string,
+        frame = Snouty.target.get_frame_count(),
+        cycle = Snouty.target.get_cpu_cycle_count(),
+    };
 end
 
 -- TODO: Reorganize this.
@@ -62,6 +67,7 @@ local function points_to_code(targaddr_lo, targaddr_hi)
     local targaddr = targaddr_lo + (0x100 * targaddr_hi);
     return mapper_0_utils.code_chunks[targaddr] ~= nil;
 end
+mapper_0_utils.points_to_code = points_to_code;
 
 function mapper_0_utils.assert_jumps_are_safe(disas_path)
     local all_chunks =
