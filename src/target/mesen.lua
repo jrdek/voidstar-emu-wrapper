@@ -7,7 +7,11 @@ local targMesen = {
 };
 
 function targMesen.get_reg(regname)
-    return emu.getNesData(regname)
+    if emu.getNesData then
+        return emu.getNesData(regname)
+    else
+        return emu.getState()["cpu." .. string.lower(regname)]  -- <-- incredibly slow!
+    end
 end
 
 function targMesen.get_byte_at_cpu_addr(addr)
@@ -142,6 +146,7 @@ function targMesen.get_cpu_cycle_count()
         return emu.getNesData("cpuCycle");
     else
         return emu.getState()["cpuCycle"];  -- <-- incredibly slow!
+    end
 end
 
 local DO_NOTHING = function () end;

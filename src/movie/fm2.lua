@@ -13,7 +13,7 @@ function fm2_lib.initialize_handle(handle)
     repeat
         start_of_line = handle:seek("cur");
         line = handle:read("*l");
-    until (line == nil) or (line:find("^|.*|$") ~= nil);
+    until (line == nil) or (line:find("^|.*|") ~= nil);
 
     -- set the cursor back to the start of the first line of inputs
     handle:seek("set", start_of_line);
