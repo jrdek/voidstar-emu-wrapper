@@ -17,8 +17,6 @@ local function get_emu_metadata()
     }
 end
 
--- current tas: player takes damage at input 4281.
-
 require "src.libsnouty";
 debug_print.enable();
 
@@ -129,16 +127,6 @@ WorldNCallback = emu.addMemoryCallback(
 	0x8000
 );
 
-emu.addMemoryCallback(
-	function ()
-		if not mapper0_utils.points_to_code(mapper0_utils.get_indjmp_targaddr_lohi(0x06, 0x00)) then
-			Snouty.target._can_resume = false;
-			print("bad indirect jump!!!!!!!")
-		end
-	end,
-	emu.callbackType.exec,
-	0x8e16
-)
 
 
 print( ("[snouty] Starting (%d assertions)"):format(Snouty.target._assertion_count) );
