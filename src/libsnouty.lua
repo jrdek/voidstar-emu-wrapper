@@ -70,12 +70,10 @@ function Snouty.do_frame()
         emu.stop();  -- FIXME Mesen-specific
         --while true do end;
     elseif all_inputs == "softreset" then
-        -- debug_print("[snouty][do_frame] Soft resetting...")
         Snouty.target.soft_reset();
     else
         local p1_inputs = all_inputs[1];  -- TODO: not just p1...
         -- set them in the emulator
-        --debug_print("[snouty][do_frame] Setting inputs...")
         Snouty.target.set_joypad_for_player(1, p1_inputs);
         -- advance.
         Snouty.target.advance_frame();

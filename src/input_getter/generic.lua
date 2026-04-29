@@ -4,8 +4,11 @@
 local InputGetter = {}
 
 function InputGetter:new(args)
-    if (args or {}).movie then
+    args = args or {};
+    if args.movie then
         return (require "src.input_getter.scripted"):new(args);
+    elseif args.random then
+        return (require "src.input_getter.random"):new(args);
     end
     local new_instance = {};
     setmetatable(new_instance, self);

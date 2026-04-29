@@ -8,7 +8,7 @@ cd "$LIBSNOUTY_PATH";
 ###== TEST CONFIG ==###
 ROM_NAME="mario.nes";
 
-SCRIPT_NAME="mesen/world_n_start.lua";
+SCRIPT_NAME="games/smb1/play_urandom.lua";
 
 SCRIPT_PATH="$LIBSNOUTY_PATH/test/$SCRIPT_NAME";
 
@@ -33,7 +33,5 @@ ANTITHESIS_OUTPUT_DIR="$ANTITHESIS_OUTPUT_DIR" \
 exec \
 "$MESEN_BINARY" \
     -enablestdout \
-    --testrunner \
-    -timeout=3600 \
     "$SCRIPT_PATH" \
     "$ROM_PATH"
