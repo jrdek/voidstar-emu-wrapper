@@ -33,5 +33,7 @@ ANTITHESIS_OUTPUT_DIR="$ANTITHESIS_OUTPUT_DIR" \
 exec \
 "$MESEN_BINARY" \
     -enablestdout \
+    --testrunner \
+    --timeout=2147483600 \
     "$SCRIPT_PATH" \
     "$ROM_PATH"

@@ -26,6 +26,8 @@ end
 Snouty.setup_input_getter({random = true});
 
 print( ("[snouty] Starting (%d assertions)"):format(Snouty.target._assertion_count) );
+
+Snouty.emit_setup_complete()
 Snouty.target.init_emulator();  -- if with Mesen
 
 
