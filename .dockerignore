@@ -1,0 +1,32 @@
+# jrdek NOTE:
+# this file is written by claude.
+# but it seems to work fine enough.
+# -----
+
+# Host-side Mesen2 build artifacts. The makefile emits .o files next to
+# sources (Mesen2/makefile:215-219), so a host build scatters objects
+# throughout the tree. If those leak into the image, the container's
+# `make` reuses host-compiled .o files at link time, producing a binary
+# with mixed toolchains.
+Mesen2/**/*.o
+Mesen2/**/obj.*/
+Mesen2/**/[Oo]bj/
+Mesen2/**/[Bb]in/
+Mesen2/**/*.so
+Mesen2/**/*.dylib
+Mesen2/**/*.profraw
+Mesen2/**/*.profdata
+Mesen2/**/PGOHelper/pgo.*
+Mesen2/**/Dependencies.zip
+Mesen2/**/[Dd]ebug/
+Mesen2/**/[Rr]elease/
+Mesen2/**/publish/
+
+# .NET build state inside Mesen2/UI
+Mesen2/UI/bin/
+Mesen2/UI/obj/
+
+# Repo-level junk that has no business in the image
+.git/
+.gitignore
+**/.DS_Store
