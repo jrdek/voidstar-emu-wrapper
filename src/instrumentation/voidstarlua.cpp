@@ -3,8 +3,10 @@ extern "C" {
     #include <lauxlib.h>
 }
 
-extern size_t init_coverage_module(size_t edge_count, const char* symbol_file_name);
-extern bool notify_coverage(size_t edge_plus_module);
+extern "C" int luaopen_libvoidstarlua(lua_State* L);
+
+extern "C" size_t init_coverage_module(size_t edge_count, const char* symbol_file_name);
+extern "C" bool notify_coverage(size_t edge_plus_module);
 // extern int fuzz_getchar();
 
 static int l_greet(lua_State* L) {
@@ -56,4 +58,3 @@ int luaopen_libvoidstarlua(lua_State* L) {
 #endif
     return 1;
 }
-
