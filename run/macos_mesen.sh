@@ -21,8 +21,8 @@ ROM_PATH="$ROMSDIR_PATH/$ROM_NAME";
 
 
 ###= SYSTEM CONFIG =###
-MESEN_BINARY=$(which Mesen);
-
+MESEN_BINARY="$LIBSNOUTY_PATH/Mesen2/bin/linux-x64/Release/linux-x64/publish/Mesen"  #$(which Mesen);
+# FIXME!
 
 # make sure the output dir exists
 mkdir -p "$ANTITHESIS_OUTPUT_DIR";
@@ -34,6 +34,6 @@ exec \
 "$MESEN_BINARY" \
     -enablestdout \
     --testrunner \
-    --timeout=2147483600 \
+    --timeout=30 \
     "$SCRIPT_PATH" \
     "$ROM_PATH"

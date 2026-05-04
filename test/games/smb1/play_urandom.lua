@@ -1,5 +1,8 @@
 require "src.libsnouty";
---debug_print.enable();
+-- debug_print.enable();
+
+local voidstar = require "libvoidstarlua";
+print(voidstar.greet());  -- this should break
 
 
 local function get_emu_metadata()

@@ -38,10 +38,15 @@ COPY ./test ./test
 COPY ./reference ./reference
 COPY ./roms /opt/roms
 
+COPY ./libvoidstar.so /usr/lib/libvoidstar.so
+ENV PATH="$PATH:/usr/lib"
+
 WORKDIR /opt/luasrc
 
 ENTRYPOINT LUA_PATH="/opt/luasrc/?.lua;;" \
   ANTITHESIS_OUTPUT_DIR=$ANTITHESIS_OUTPUT_DIR \
+  LUA_CPATH="/opt/luasrc/src/instrumentation/?.so;;" \
+  DYLD_LIBRARY_PATH="/usr/lib" \
   /opt/Mesen2/Mesen \
     --enablestdout \
     --testrunner \
