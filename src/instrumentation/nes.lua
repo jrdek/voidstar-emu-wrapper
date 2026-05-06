@@ -31,8 +31,8 @@ end
 
 local function init_symbols(code_chunks, game_name)
     game_name = game_name or "nes_rom";
-    --run_symtblpath = "/opt/luasrc/" .. game_name .. ".tsv";
-    run_symtblpath = "/tmp/" .. game_name .. ".tsv";
+    run_symtblpath = "/opt/luasrc/" .. game_name .. ".tsv";
+    --run_symtblpath = "/tmp/" .. game_name .. ".tsv";
     run_symtbl = assert(symbol_table.create(run_symtblpath, game_name, "asm6502"));
     local guard_count = 0;
     for addr, _ in pairs(code_chunks) do
