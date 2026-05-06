@@ -36,10 +36,10 @@ local --[[<const>]] SYMBOLTABLE_COLUMNS = table.concat(
 );
 function SymbolTable:write_header(module_name)
     -- TODO: should probably pcall these
-    self.emitter.emit("# language = " .. self.language);
-    self.emitter.emit("# instrumentor = voidstar_emu_wrapper");
-    self.emitter.emit("# module = " .. module_name);
-    self.emitter.emit(SYMBOLTABLE_COLUMNS);
+    self.emitter:emit("# language = " .. self.language);
+    self.emitter:emit("# instrumentor = voidstar_emu_wrapper");
+    self.emitter:emit("# module = " .. module_name);
+    self.emitter:emit(SYMBOLTABLE_COLUMNS);
 end
 
 local --[[<const>]] SYMBOLTABLE_ROW_TEMPLATE = table.concat(
@@ -51,10 +51,11 @@ local --[[<const>]] SYMBOLTABLE_ROW_TEMPLATE = table.concat(
         "%d",  -- end_line
         "%d",  -- end_column
         "%d",  -- address (edge)
-    }
-)
+    },
+    "\t"
+);
 function SymbolTable:write_position(path, func, startline, startcol, endline, endcol, edge)
-    return self.emitter.emit(SYMBOLTABLE_ROW_TEMPLATE:format(path, func, startline, startcol, endline, endcol, edge));
+    return self.emitter:emit(SYMBOLTABLE_ROW_TEMPLATE:format(path, func, startline, startcol, endline, endcol, edge));
 end
 
 local function create(outpath, module_name, language_name)

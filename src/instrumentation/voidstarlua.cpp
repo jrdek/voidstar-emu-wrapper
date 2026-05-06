@@ -38,7 +38,6 @@ static int l_notify_coverage(lua_State* L) {
 // n.b.: this function name is load-bearing, and so is the output .so's name!
 int luaopen_libvoidstarlua(lua_State* L) {
     luaL_Reg funcs[] = {
-        {"greet", l_greet},
         {"initCoverageModule", l_init_coverage_module},
         {"notifyCoverage", l_notify_coverage},
         {NULL, NULL}
