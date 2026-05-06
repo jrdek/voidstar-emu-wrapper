@@ -66,7 +66,15 @@ local function parse_line(line)
     return parsed_data;
 end
 
-
+--[[
+A "region" is, very hand-wavily, the data in at least one line of disassembly.
+A little less hand wavily, a "region" has
+  - (entry key): number       -- the address at which the region starts
+  - .bytes: list<number>      -- the bytes in the first line of the region
+  - .num_bytes                -- the distance, in bytes, between the region's start and the next one's start
+  - .label?: string           -- the line's optional label
+  - .is_instruction: boolean  -- whether this region encodes an instruction or a data block
+--]]
 function module.get_region_starts(path)
     local insts_file = assert(io.open(path, "r"), "file not found");
     local regions = {};

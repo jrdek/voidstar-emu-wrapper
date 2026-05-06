@@ -1,6 +1,6 @@
 
 
-local sourcegen_parser = require "src.disas.6502_sourcegen";
+local sourcegen_parser = require "src.disas.6502";
 
 local DISAS_FOLDER_PATH --[[<const>]] = (require "src.utils.paths").path_to_repo_root() .. "/reference/mario_disas/";
 

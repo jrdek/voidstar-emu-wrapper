@@ -3,7 +3,7 @@
 local DISAS_FOLDER_PATH --[[<const>]] = (require "src.utils.paths").path_to_repo_root() .. "/reference/mario_disas/";
 local NROM_BOUNDS --[[<const>]] = {lo = 0x8000, hi = 0xffff};
 
-local sourcegen_parser = require "src.disas.6502_sourcegen";
+local sourcegen_parser = require "src.disas.6502";
 local addrs = sourcegen_parser.get_region_starts(DISAS_FOLDER_PATH .. "main_program.txt");
 
 local addr = NROM_BOUNDS.lo;

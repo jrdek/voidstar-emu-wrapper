@@ -8,6 +8,7 @@ local module = {};
 
 module.Emitter = {};
 
+-- TODO cleanup: this shouldn't be :new, it should be .new
 function module.Emitter:new(path)
     local new_instance = {};
     setmetatable(new_instance, self);

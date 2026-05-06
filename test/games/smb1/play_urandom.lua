@@ -1,30 +1,33 @@
 require "src.libsnouty";
 -- debug_print.enable();
 
-local voidstar = require "libvoidstarlua";
-print(voidstar.greet());  -- this should break
-
-
-local function get_emu_metadata()
-    return {
-        frame = Snouty.target.get_frame_count(),
-        cycle = Snouty.target.get_cpu_cycle_count()
-    }
-end
-
+-- local function get_emu_metadata()
+--     return {
+--         frame = Snouty.target.get_frame_count(),
+--         cycle = Snouty.target.get_cpu_cycle_count()
+--     }
+-- end
 
 local REPO_ROOT --[[<const>]] = (require "src.utils.paths").path_to_repo_root();
 local DISAS_PATH --[[<const>]] = REPO_ROOT .. "/reference/mario_disas/main_program.txt";
 
-local mapper0_utils = require "test.mappers.mapper_0"
+local mapper0_utils = require "test.mappers.mapper_0";
 mapper0_utils.assert_jumps_are_safe(DISAS_PATH);
-for addr,_ in pairs(mapper0_utils.code_chunks) do
-    Snouty.assert.reachable({
-        location = {address = addr},
-        description = ("inst @ $%04x is reachable"):format(addr),
-        get_details = get_emu_metadata
-    });
+-- it's bad ergonomics, but the above populates code_chunks too.
+
+local nes_coverage = require "src.instrumentation.nes";
+nes_coverage.init_coverage(mapper0_utils.code_chunks, "og_mario");
+-- TODO: make this live in Snouty.target! this will only work on Mesen as-is
+for addr, _ in mapper0_utils.code_chunks do
+    emu.addMemoryCallback(
+        function ()
+            nes_coverage.notify(addr);
+        end,
+        emu.callbackType.exec,
+        addr
+    );  -- not sure if these can ever be unregistered...
 end
+
 
 Snouty.setup_input_getter({random = true});
 

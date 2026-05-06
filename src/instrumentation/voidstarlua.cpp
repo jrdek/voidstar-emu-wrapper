@@ -7,14 +7,7 @@ extern "C" int luaopen_libvoidstarlua(lua_State* L);
 
 extern "C" size_t init_coverage_module(size_t edge_count, const char* symbol_file_name);
 extern "C" bool notify_coverage(size_t edge_plus_module);
-// extern int fuzz_getchar();
-
-static int l_greet(lua_State* L) {
-    // test func, to be deleted later
-    const char* greeting = "YAY IT WORKS\n";
-    lua_pushstring(L, greeting);
-    return 1;
-}
+// extern "C" int fuzz_getchar();
 
 static int l_init_coverage_module(lua_State* L) {
     int argc = lua_gettop(L);

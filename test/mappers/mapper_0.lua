@@ -71,7 +71,7 @@ mapper_0_utils.points_to_code = points_to_code;
 
 function mapper_0_utils.assert_jumps_are_safe(disas_path)
     local all_chunks =
-        (require "src.disas.6502_sourcegen")
+        (require "src.disas.6502")
         .get_region_starts(disas_path);
     local code_chunks = {};
 

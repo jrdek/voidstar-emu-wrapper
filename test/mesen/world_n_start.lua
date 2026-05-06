@@ -1,14 +1,8 @@
-﻿
+﻿-- FIXME: this file needs cleanup
 
+require "src.libsnouty";
+debug_print.enable();
 
-local breakOnPlayerInjury = emu.addMemoryCallback(
-	function ()
-		print("Took damage!!!!!")
-		print("Input number: " .. tostring(inputline))
-	end,
-	emu.callbackType.exec,
-	0xd92c
-)
 
 local function get_emu_metadata()
     return {
@@ -16,9 +10,6 @@ local function get_emu_metadata()
         cycle = Snouty.target.get_cpu_cycle_count()
     }
 end
-
-require "src.libsnouty";
-debug_print.enable();
 
 local REPO_ROOT --[[<const>]] = (require "src.utils.paths").path_to_repo_root();
 local DISAS_PATH --[[<const>]] = REPO_ROOT .. "/reference/mario_disas/main_program.txt";
