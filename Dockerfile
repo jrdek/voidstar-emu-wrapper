@@ -34,6 +34,7 @@ COPY --from=mesenbuilder /Mesen2/Lua /opt/Mesen2Lua
 # if we don't do this, mesen will try to open a window to initialize settings
 RUN : > /opt/Mesen2/settings.json
 
+RUN mkdir -p /symbols
 RUN mkdir -p /opt/luasrc
 WORKDIR /opt/luasrc
 COPY ./src ./src

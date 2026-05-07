@@ -28,19 +28,18 @@ function module.declare_guard(symtbl, game_name, addr, bank)
     return symtbl:write_position(
         game_name,
         "",
-        full_addr,  -- this is silly, but the
+        full_addr,  -- (start is inclusive)
         0,
-        full_addr,  -- start and end of each
+        full_addr+1,  -- (end is exclusive)
         0,
-        full_addr   -- tracked inst is its addr.
+        full_addr
         -- (checkme: or do these need to *not* be sparse?)
     )
 end
 
 local function init_symbols(code_chunks, game_name)
     game_name = game_name or "nes_rom";
-    run_symtblpath = "/opt/luasrc/" .. game_name .. ".tsv";
-    --run_symtblpath = "/tmp/" .. game_name .. ".tsv";
+    run_symtblpath = "/symbols/" .. game_name .. ".tsv";
     run_symtbl = assert(symbol_table.create(run_symtblpath, game_name, "asm6502"));
     run_guardcount = 0;
     run_addridxs = {};
