@@ -2,7 +2,7 @@
 todo: docstring
 ]]
 
-local symbol_table = require "src.instrumentation.symbol_table";
+-- local symbol_table = require "src.instrumentation.symbol_table";
 local voidstar = require "libvoidstarlua";
 
 
@@ -25,26 +25,26 @@ function module.declare_guard(symtbl, game_name, addr, bank)
     local full_addr = full_addr_from(bank, addr);
     run_guardcount = run_guardcount + 1;
     run_addridxs[full_addr] = run_guardcount;
-    return symtbl:write_position(
-        game_name,
-        "",
-        full_addr,  -- (start is inclusive)
-        0,
-        full_addr+1,  -- (end is exclusive)
-        0,
-        full_addr
-        -- (checkme: or do these need to *not* be sparse?)
-    )
+    -- return symtbl:write_position(
+    --     game_name,
+    --     "",
+    --     full_addr,  -- (start is inclusive)
+    --     0,
+    --     full_addr+1,  -- (end is exclusive)
+    --     0,
+    --     full_addr
+    --     -- (checkme: or do these need to *not* be sparse?)
+    -- )
 end
 
 local function init_symbols(code_chunks, game_name)
     game_name = game_name or "nes_rom";
     run_symtblpath = "/symbols/" .. game_name .. ".sym.tsv";
-    run_symtbl = assert(symbol_table.create(run_symtblpath, game_name, "asm6502"));
+    -- run_symtbl = assert(symbol_table.create(run_symtblpath, game_name, "asm6502"));
     run_guardcount = 0;
     run_addridxs = {};
     for addr, _ in pairs(code_chunks) do
-        module.declare_guard(run_symtbl, game_name, addr);
+        module.declare_guard(nil, game_name, addr);
     end
     return run_guardcount;
 end

@@ -35,6 +35,9 @@ COPY --from=mesenbuilder /Mesen2/Lua /opt/Mesen2Lua
 RUN : > /opt/Mesen2/settings.json
 
 RUN mkdir -p /symbols
+COPY ./og_mario_premade.sym.tsv /symbols/og_mario.sym.tsv
+# hopefully this will make the Fuzzer happier...
+
 RUN mkdir -p /opt/luasrc
 WORKDIR /opt/luasrc
 COPY ./src ./src
