@@ -39,7 +39,7 @@ end
 
 local function init_symbols(code_chunks, game_name)
     game_name = game_name or "nes_rom";
-    run_symtblpath = "/symbols/" .. game_name .. ".tsv";
+    run_symtblpath = "/symbols/" .. game_name .. ".sym.tsv";
     run_symtbl = assert(symbol_table.create(run_symtblpath, game_name, "asm6502"));
     run_guardcount = 0;
     run_addridxs = {};
