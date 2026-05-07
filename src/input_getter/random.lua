@@ -11,7 +11,7 @@ function RandomInputGetter:new(args)
     setmetatable(new_getter, self);
     self.__index = self;
 
-    new_getter.entropy = io.open("/dev/urandom");
+    --new_getter.entropy = io.open("/dev/urandom");
     -- TODO: handle for non-*nix systems
 
     return new_getter;
@@ -20,14 +20,16 @@ end
 local BUTTON_ORDER --[[<const>]] =
     {"right", "left", "down", "up", "start", "select", "B", "A"};
 
+local voidstar = require "libvoidstarlua";
 
 function RandomInputGetter:get_next()
-    local inputs_char = self.entropy:read(1);
+    --local inputs_char = self.entropy:read(1);
+    local inputs_char = voidstar.fuzz_getchar();
+
     -- TODO: maybe move this logic to a new file?
     -- and maybe add more bytes...
     local pressed = {};
     local inputs_num = string.unpack('B', inputs_char);
-    local inputs_num_bkp = inputs_num;
     local ibval = 128;
     for i = 1,8 do
         local masked = ((inputs_num >= ibval) and ibval) or 0;
