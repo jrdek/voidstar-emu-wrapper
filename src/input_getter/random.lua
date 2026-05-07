@@ -24,7 +24,7 @@ local voidstar = require "libvoidstarlua";
 
 function RandomInputGetter:get_next()
     --local inputs_char = self.entropy:read(1);
-    local inputs_char = voidstar.fuzz_getchar();
+    local inputs_char = voidstar.fuzzGetChar();
 
     -- TODO: maybe move this logic to a new file?
     -- and maybe add more bytes...

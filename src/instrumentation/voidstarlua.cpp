@@ -51,6 +51,7 @@ int luaopen_libvoidstarlua(lua_State* L) {
     luaL_Reg funcs[] = {
         {"initCoverageModule", l_init_coverage_module},
         {"notifyCoverage", l_notify_coverage},
+        {"fuzzGetChar", l_fuzz_getchar},
         {NULL, NULL}
     };
     // version checks since lua changes its API per version
