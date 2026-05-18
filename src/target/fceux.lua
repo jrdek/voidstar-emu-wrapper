@@ -1,6 +1,7 @@
 --[[ Interface for working with the FCEUX NES emulator. ]]--
 local target_helpers = require "src.target.generic";
 local targFCEUX = {
+    _assertion_count = 0,
     assertion_handlers = {
         execute = {}
     }
@@ -70,6 +71,7 @@ function targFCEUX.register_exec(id, loc, onhit)
     );
     local metahandler = target_helpers.build_metahandler(current_onhits);
     memory.registerexecute(loc.begin_line, metahandler);
+    targFCEUX._assertion_count = targFCEUX._assertion_count + 1
 end
 
 function targFCEUX.deregister_exec(id, loc)  -- CHECKME needs testing
@@ -79,6 +81,7 @@ function targFCEUX.deregister_exec(id, loc)  -- CHECKME needs testing
     assert(current_onhits, string.format("Can't deregister_exec: no handlers at %d", locval));
     if current_onhits[id] ~= nil then
         current_onhits[id] = nil;
+        targFCEUX._assertion_count = targFCEUX._assertion_count - 1;
         local metahandler = target_helpers.build_metahandler(current_onhits);
         memory.registerexecute(loc.begin_line, metahandler);
     end

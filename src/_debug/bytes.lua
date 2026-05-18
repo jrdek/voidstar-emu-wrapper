@@ -16,7 +16,7 @@ function libbytes.unpack_unsigned(bs)
 	return string.unpack("J", bs);
 end
 
-local LUA_UNSIGNED_SIZE <const> = #(string.pack("J", 0));
+local LUA_UNSIGNED_SIZE --[[<const>]] = #(string.pack("J", 0));
 libbytes.sizeof.lua_Number = LUA_UNSIGNED_SIZE;
 
 

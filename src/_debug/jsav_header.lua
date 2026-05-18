@@ -49,7 +49,7 @@ for _, finfo in ipairs(JsavHeader._fields) do
 		finfo.type.size +
 		#JsavHeader._field_end;
 end
-local jsav_header_size <const> =
+local jsav_header_size --[[<const>]] =
 	#JsavHeader._start +
 	sizeof_jsav_fields +
 	#JsavHeader._end;
