@@ -16,7 +16,7 @@ function ScriptedInputGetter:new(args)
         "args"
     );
 
-    local load_success, movie_lib = pcall(require, "src.movie." .. args.movie.format);
+    local load_success, movie_lib = pcall(require, "src._debug.movie." .. args.movie.format);
     assert(load_success, string.format("Unimplemented movie type: %s", args.movie.format));
 
     local new_getter = {};
