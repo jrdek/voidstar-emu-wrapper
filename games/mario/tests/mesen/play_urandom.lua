@@ -11,7 +11,7 @@ require "src.libsnouty";
 local REPO_ROOT --[[<const>]] = (require "src.utils.paths").path_to_repo_root();
 local DISAS_PATH --[[<const>]] = REPO_ROOT .. "/reference/mario_disas/main_program.txt";
 
-local mapper0_utils = require "test.mappers.mapper_0";
+local mapper0_utils = require "mappers.mapper_0";
 mapper0_utils.assert_jumps_are_safe(DISAS_PATH);
 -- it's bad ergonomics, but the above populates code_chunks too.
 

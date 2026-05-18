@@ -5,7 +5,7 @@ local mario_helpers = {
     set = {},
 }
 
-local addr_of = require "test.games.smb1.addrs";
+local addr_of = require "games.mario.lib.addrs";
 
 
 function mario_helpers.get.time_left()

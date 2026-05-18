@@ -14,7 +14,7 @@ end
 local REPO_ROOT --[[<const>]] = (require "src.utils.paths").path_to_repo_root();
 local DISAS_PATH --[[<const>]] = REPO_ROOT .. "/reference/mario_disas/main_program.txt";
 
-local mapper0_utils = require "test.mappers.mapper_0"
+local mapper0_utils = require "mappers.mapper_0"
 mapper0_utils.assert_jumps_are_safe(DISAS_PATH);
 for addr,_ in pairs(mapper0_utils.code_chunks) do
     Snouty.assert.reachable({
@@ -26,7 +26,7 @@ end
 
 
 
-local jsav = require "test.jsav.jsav_header";
+local jsav = require "src._debug.jsav_header";
 
 -- set up a save dump
 -- TODO: move this

@@ -1,3 +1,6 @@
+### generic ignored stuff, for repo tidiness
+_ignore
+
 ### reference material
 reference/*
 !reference/mario_disas
@@ -5,14 +8,10 @@ reference/*
 reference/movies/*
 !reference/movies/world_n_ace__jrdek.fmi
 
-
 ### various places per-run output might go
 output/
 test/output/
 
-### scratch files which aren't worth persisting upstream
-brainstorm/
-test/scratch/
 
 ### rom files (but I'd like to keep the directory)
 roms/*

@@ -69,5 +69,5 @@ ENTRYPOINT LUA_PATH="/opt/luasrc/?.lua;;" \
     --timeout=2147483 \
     --Debug.ScriptWindow.AllowIoOsAccess=true \
     --Debug.ScriptWindow.ScriptTimeout=10 \
-    /opt/luasrc/test/games/smb1/play_urandom.lua \
+    /opt/luasrc/games/mario/tests/mesen/play_urandom.lua \
     /opt/roms/mario.nes

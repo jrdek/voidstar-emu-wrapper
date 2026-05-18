@@ -5,14 +5,16 @@ LIBSNOUTY_PATH=$(echo $(dirname $0)/.. | realpath);
 cd "$LIBSNOUTY_PATH";
 
 ###== TEST CONFIG ==###
-ROM_NAME="mario.nes";
+GAME_NAME="mario";
+ROM_EXTENSION=".nes";
+ROM_NAME=$GAME_NAME$ROM_EXTENSION;
 
 # SCRIPT_NAME="mario/test_mario.lua";
 SCRIPT_NAME="mario_reachability.lua";
 # SCRIPT_NAME="mario/fake_warmboot.lua";
 # SCRIPT_NAME="mario/open_bus.lua";
 
-SCRIPT_PATH="$LIBSNOUTY_PATH/test/$SCRIPT_NAME";
+SCRIPT_PATH="$LIBSNOUTY_PATH/games/$GAME_NAME/tests/fceux/$SCRIPT_NAME";
 
 
 ###= SNOUTY CONFIG =###

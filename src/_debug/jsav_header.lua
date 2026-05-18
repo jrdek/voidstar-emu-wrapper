@@ -10,7 +10,7 @@ A: I was getting really annoyed by slow iteration time when fixing the end
    of the World N-1 ACE repro. ^^' 
 --]]
 
-local bytes = require "test.utils.bytes";
+local bytes = require "src._debug.bytes";
 
 local types = {
     unsigned = {

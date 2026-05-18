@@ -4,10 +4,10 @@ debug_print.disable();
 
 
 --[[ Important addresses ]]--
-local addr_of = (require "test.games.smb1.addrs");
+local addr_of = (require "games.mario.lib.addrs");
 
 --[[ Helper functions ]]--
-local helpers = (require "test.games.smb1.helpers");
+local helpers = (require "games.mario.lib.helpers");
 
 --[[ `details` generators ]]--
 local function get_emu_metadata()
@@ -37,7 +37,7 @@ end
 local REPO_ROOT --[[<const>]] = (require "src.utils.paths").path_to_repo_root();
 local DISAS_PATH --[[<const>]] = REPO_ROOT .. "/reference/mario_disas/main_program.txt";
 
-local mapper0_utils = require "test.mappers.mapper_0"
+local mapper0_utils = require "mappers.mapper_0"
 mapper0_utils.assert_jumps_are_safe(DISAS_PATH);
 for addr,_ in pairs(mapper0_utils.code_chunks) do
     Snouty.assert.reachable({
